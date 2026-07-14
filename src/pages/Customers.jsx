@@ -8,6 +8,8 @@ const Customers = () => {
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+  const [deleteConfirmName, setDeleteConfirmName] = useState('');
   const [formData, setFormData] = useState({
     code: '', name: '', phone: '', email: '', birthday: '', gender: 'male'
   });
@@ -69,9 +71,17 @@ const Customers = () => {
     setAlertModal({ isOpen: true, type: 'success', message: editingId ? 'Cập nhật khách hàng thành công!' : 'Thêm khách hàng thành công!' });
   };
 
-  const handleDeleteCustomer = (id) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa khách hàng này không?")) {
-      deleteCustomer(id);
+  const handleDeleteCustomer = (customer) => {
+    setDeleteConfirmId(customer.id);
+    setDeleteConfirmName(customer.name);
+  };
+
+  const executeDeleteCustomer = () => {
+    if (deleteConfirmId) {
+      deleteCustomer(deleteConfirmId);
+      setDeleteConfirmId(null);
+      setDeleteConfirmName('');
+      setAlertModal({ isOpen: true, type: 'success', message: 'Xóa khách hàng thành công!' });
     }
   };
 
@@ -157,7 +167,7 @@ const Customers = () => {
                           <Edit2 className="w-3.5 h-3.5" />
                         </button>
                         <button 
-                          onClick={() => handleDeleteCustomer(c.id)}
+                          onClick={() => handleDeleteCustomer(c)}
                           className="p-2 rounded-lg bg-slate-50 dark:bg-slate-700 hover:bg-rose-50 dark:hover:bg-rose-900/30 text-slate-400 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 border border-slate-200 dark:border-slate-600 hover:border-rose-200 dark:hover:border-rose-800 transition-all"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -287,6 +297,38 @@ const Customers = () => {
                 className="px-6 py-2 bg-[#0052FF] text-white text-[13px] font-bold rounded-lg hover:bg-[#0042d1] transition-colors shadow-md shadow-[#0052FF]/20"
               >
                 Lưu
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* CONFIRM DELETE MODAL (WITHOUT DARK BLUR BACKDROP) */}
+      {deleteConfirmId && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-transparent" onClick={() => setDeleteConfirmId(null)} />
+          <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-slate-200 dark:border-slate-700 animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-6 text-center space-y-4">
+              <div className="w-16 h-16 bg-rose-100 dark:bg-rose-900/40 text-rose-500 dark:text-rose-400 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Trash2 className="w-8 h-8" />
+              </div>
+              <h3 className="text-lg font-extrabold text-slate-800 dark:text-white">Xóa khách hàng này?</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+                Bạn có chắc chắn muốn xóa khách hàng <span className="font-bold text-slate-700 dark:text-slate-300">{deleteConfirmName}</span> không? Hành động này không thể hoàn tác.
+              </p>
+            </div>
+            <div className="p-4 bg-slate-50 dark:bg-slate-800/80 border-t border-slate-100 dark:border-slate-700 flex gap-3 transition-colors">
+              <button 
+                onClick={() => setDeleteConfirmId(null)}
+                className="flex-1 px-4 py-2.5 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-bold rounded-xl border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
+              >
+                Hủy bỏ
+              </button>
+              <button 
+                onClick={executeDeleteCustomer}
+                className="flex-1 px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-bold rounded-xl shadow-md shadow-rose-500/20 transition-colors"
+              >
+                Xóa ngay
               </button>
             </div>
           </div>

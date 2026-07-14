@@ -49,8 +49,8 @@ export const AppProvider = ({ children }) => {
       console.error('Lỗi khi tải dữ liệu từ Server:', error);
     }
 
-    // Vẫn dùng localStorage để giữ phiên Đăng nhập
-    const storedActiveUser = localStorage.getItem('drx_active_user');
+    // Vẫn dùng sessionStorage để giữ phiên Đăng nhập tạm thời khi tắt trình duyệt
+    const storedActiveUser = sessionStorage.getItem('drx_active_user');
     if (storedActiveUser) {
       setActiveUser(JSON.parse(storedActiveUser));
     } else {
@@ -78,8 +78,8 @@ export const AppProvider = ({ children }) => {
       if (foundUser.password !== password) return { success: false, message: 'Mật khẩu không chính xác.' };
       if (!foundUser.isActive) return { success: false, message: 'Tài khoản này đã bị khóa. Vui lòng liên hệ Admin tối cao.' };
       
-      localStorage.setItem('admin_token', 'DRX_TOKEN_MOCK_123456');
-      localStorage.setItem('drx_active_user', JSON.stringify(foundUser));
+      sessionStorage.setItem('admin_token', 'DRX_TOKEN_MOCK_123456');
+      sessionStorage.setItem('drx_active_user', JSON.stringify(foundUser));
       setActiveUser(foundUser);
       
       return { success: true };
@@ -90,8 +90,8 @@ export const AppProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('admin_token');
-    localStorage.removeItem('drx_active_user');
+    sessionStorage.removeItem('admin_token');
+    sessionStorage.removeItem('drx_active_user');
     setActiveUser(null);
   };
 
@@ -119,7 +119,7 @@ export const AppProvider = ({ children }) => {
         setUsers(prev => prev.map(u => (String(u.id) === String(updatedUser.id) ? updatedUser : u)));
         if (activeUser && String(activeUser.id) === String(updatedUser.id)) {
           setActiveUser(updatedUser);
-          localStorage.setItem('drx_active_user', JSON.stringify(updatedUser));
+          sessionStorage.setItem('drx_active_user', JSON.stringify(updatedUser));
         }
       }
     } catch (error) { console.error('Lỗi cập nhật user:', error); }

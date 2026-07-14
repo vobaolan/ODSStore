@@ -6,8 +6,24 @@ import { AppContext } from '../contexts/AppContext';
 const Products = () => {
   const navigate = useNavigate();
   const [expandedRow, setExpandedRow] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('Tất cả');
   
   const { products, deleteProduct } = useContext(AppContext);
+
+  // Lấy danh mục động từ danh sách sản phẩm thực tế
+  const categoriesList = ['Tất cả', ...new Set(products.map(p => p.category).filter(Boolean))];
+
+  // Lọc sản phẩm theo tìm kiếm và danh mục
+  const filteredProducts = products.filter(p => {
+    const matchesSearch = 
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.brand && p.brand.toLowerCase().includes(searchQuery.toLowerCase()));
+      
+    if (selectedCategory === 'Tất cả') return matchesSearch;
+    return matchesSearch && p.category === selectedCategory;
+  });
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US').format(price) + ' ₫';
@@ -46,6 +62,8 @@ const Products = () => {
           <input
             type="text"
             placeholder="Tìm theo tên, SKU hoặc hãng..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900/50 text-xs font-semibold text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 rounded-lg border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-[#0052ff] dark:focus:border-[#6699ff] focus:outline-none transition-all"
           />
         </div>
@@ -57,11 +75,12 @@ const Products = () => {
             <span>Bộ lọc thông số</span>
           </button>
           <div className="flex items-center gap-1.5 border-l border-slate-200 dark:border-slate-700 pl-3 transition-colors">
-            {['Tất cả', 'Laptop', 'Keyboard', 'Mouse'].map((cat, i) => (
+            {categoriesList.map((cat, i) => (
               <button 
                 key={i} 
+                onClick={() => setSelectedCategory(cat)}
                 className={`px-3 py-1.5 rounded-lg text-[11px] font-bold border transition-all ${
-                  i === 0 
+                  cat === selectedCategory 
                     ? 'bg-[#E6F0FF] dark:bg-[#0052ff]/20 border-[#0052ff]/25 dark:border-[#0052ff]/30 text-[#0052ff] dark:text-[#6699ff]' 
                     : 'bg-transparent border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-white'
                 }`}
@@ -90,12 +109,12 @@ const Products = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50 transition-colors">
-              {products.length === 0 ? (
+              {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="p-8 text-center text-slate-500 dark:text-slate-400 font-semibold">Chưa có hàng hóa nào trong hệ thống.</td>
+                  <td colSpan="8" className="p-8 text-center text-slate-500 dark:text-slate-400 font-semibold">Không tìm thấy hàng hóa phù hợp.</td>
                 </tr>
               ) : (
-                products.map((p) => (
+                filteredProducts.map((p) => (
                   <React.Fragment key={p.id}>
                   <tr 
                     className="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition-colors group cursor-pointer"

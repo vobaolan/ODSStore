@@ -88,7 +88,7 @@ const AdminLayout = () => {
     if (!activeUser) {
       // Đảm bảo không bị lặp vô tận nếu load chậm
       const timer = setTimeout(() => {
-        if (!localStorage.getItem('drx_active_user')) {
+        if (!sessionStorage.getItem('drx_active_user')) {
           navigate('/login');
         }
       }, 500);

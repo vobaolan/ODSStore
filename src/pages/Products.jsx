@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Plus, Edit2, Trash2, Search, Filter, Layers, Eye } from 'lucide-react';
+import { Plus, Edit2, Trash2, Search, Filter, Layers, Eye, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../contexts/AppContext';
 
@@ -8,6 +8,9 @@ const Products = () => {
   const [expandedRow, setExpandedRow] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Tất cả');
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+  const [deleteConfirmName, setDeleteConfirmName] = useState('');
+  const [alertModal, setAlertModal] = useState({ isOpen: false, type: '', message: '' });
   
   const { products, deleteProduct } = useContext(AppContext);
 
@@ -29,9 +32,17 @@ const Products = () => {
     return new Intl.NumberFormat('en-US').format(price) + ' ₫';
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
-      deleteProduct(id);
+  const handleDelete = (product) => {
+    setDeleteConfirmId(product.id);
+    setDeleteConfirmName(product.name);
+  };
+
+  const executeDeleteProduct = () => {
+    if (deleteConfirmId) {
+      deleteProduct(deleteConfirmId);
+      setDeleteConfirmId(null);
+      setDeleteConfirmName('');
+      setAlertModal({ isOpen: true, type: 'success', message: 'Xóa sản phẩm thành công!' });
     }
   };
 
@@ -171,7 +182,7 @@ const Products = () => {
                           <Edit2 className="w-3.5 h-3.5" />
                         </button>
                         <button 
-                          onClick={(e) => { e.stopPropagation(); handleDelete(p.id); }}
+                          onClick={(e) => { e.stopPropagation(); handleDelete(p); }}
                           className="p-2 rounded-lg bg-slate-50 dark:bg-slate-700 hover:bg-rose-50 dark:hover:bg-rose-900/30 text-slate-400 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 border border-slate-200 dark:border-slate-600 hover:border-rose-200 dark:hover:border-rose-800 transition-all" title="Xóa hàng hóa">
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -196,6 +207,72 @@ const Products = () => {
           </table>
         </div>
       </div>
+
+      {/* CONFIRM DELETE MODAL (WITHOUT DARK BLUR BACKDROP) */}
+      {deleteConfirmId && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-transparent" onClick={() => setDeleteConfirmId(null)} />
+          <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-slate-200 dark:border-slate-700 animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-6 text-center space-y-4">
+              <div className="w-16 h-16 bg-rose-100 dark:bg-rose-900/40 text-rose-500 dark:text-rose-400 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Trash2 className="w-8 h-8" />
+              </div>
+              <h3 className="text-lg font-extrabold text-slate-800 dark:text-white">Xóa sản phẩm này?</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+                Bạn có chắc chắn muốn xóa sản phẩm <span className="font-bold text-slate-700 dark:text-slate-300">{deleteConfirmName}</span> không? Hành động này không thể hoàn tác.
+              </p>
+            </div>
+            <div className="p-4 bg-slate-50 dark:bg-slate-800/80 border-t border-slate-100 dark:border-slate-700 flex gap-3 transition-colors">
+              <button 
+                onClick={() => setDeleteConfirmId(null)}
+                className="flex-1 px-4 py-2.5 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-bold rounded-xl border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
+              >
+                Hủy bỏ
+              </button>
+              <button 
+                onClick={executeDeleteProduct}
+                className="flex-1 px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-bold rounded-xl shadow-md shadow-rose-500/20 transition-colors"
+              >
+                Xóa ngay
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ALERT MODAL */}
+      {alertModal.isOpen && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-transparent" onClick={() => setAlertModal({ isOpen: false, type: '', message: '' })} />
+          <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-black/50 border border-slate-200 dark:border-slate-700 w-full max-w-xs overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-5 space-y-4">
+              <div className="flex flex-col items-center justify-center text-center space-y-3">
+                {alertModal.type === 'success' ? (
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  </div>
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center text-rose-600 dark:text-rose-400">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                  </div>
+                )}
+                <h3 className="font-bold text-slate-800 dark:text-white text-lg">
+                  {alertModal.type === 'success' ? 'Thành công!' : 'Lỗi'}
+                </h3>
+                <p className="text-[13px] font-medium text-slate-500 dark:text-slate-400">
+                  {alertModal.message}
+                </p>
+              </div>
+              <button 
+                onClick={() => setAlertModal({ isOpen: false, type: '', message: '' })}
+                className="w-full px-4 py-2 bg-[#0052FF] text-white text-[13px] font-bold rounded-lg hover:bg-[#0042d1] transition-colors shadow-md shadow-[#0052FF]/20"
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

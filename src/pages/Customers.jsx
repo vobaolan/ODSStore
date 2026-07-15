@@ -185,7 +185,7 @@ const Customers = () => {
       {/* CREATE / EDIT CUSTOMER MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-slate-900/40 dark:bg-slate-900/80 backdrop-blur-sm" onClick={handleCloseModal} />
+          <div className="absolute inset-0 bg-transparent" onClick={handleCloseModal} />
           <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.1)] dark:shadow-black/50 w-full max-w-2xl overflow-hidden border border-slate-200 dark:border-slate-700 transition-colors">
             <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between transition-colors">
               <h3 className="text-[16px] font-bold text-slate-800 dark:text-white">

@@ -110,8 +110,10 @@ const POS = () => {
       return;
     }
 
+    const orderCode = `DRX-HD${Math.floor(1000 + Math.random() * 9000)}`;
     const newOrder = {
-      id: `DRX-HD${Math.floor(1000 + Math.random() * 9000)}`,
+      id: orderCode,
+      code: orderCode,
       date: new Date().toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
       customerId: selectedCustomerId,
       customer: customers.find(c => String(c.id) === String(selectedCustomerId))?.name || 'Khách lẻ',

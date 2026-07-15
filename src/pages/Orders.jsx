@@ -55,7 +55,7 @@ const Orders = () => {
                       className="p-4 font-bold text-[#0052ff] dark:text-[#6699ff] cursor-pointer hover:underline"
                       onClick={() => setSelectedOrder(o)}
                     >
-                      {o.id}
+                      {o.code || o.id}
                     </td>
                     <td className="p-4 text-slate-500 dark:text-slate-400 font-medium">{o.date}</td>
                     <td className="p-4 font-mono font-bold text-slate-500 dark:text-slate-400">{o.customerCode}</td>
@@ -100,7 +100,7 @@ const Orders = () => {
             <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/50 shrink-0 transition-colors">
               <div className="flex items-center gap-4">
                 <h3 className="text-lg font-extrabold text-slate-800 dark:text-white">
-                  Chi tiết hóa đơn: <span className="text-[#0052ff] dark:text-[#6699ff]">{selectedOrder.id}</span>
+                  Chi tiết hóa đơn: <span className="text-[#0052ff] dark:text-[#6699ff]">{selectedOrder.code || selectedOrder.id}</span>
                 </h3>
                 <span className="px-2.5 py-1 rounded bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold uppercase tracking-wider border border-emerald-200 dark:border-emerald-800">Hoàn thành</span>
               </div>

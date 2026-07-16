@@ -366,17 +366,17 @@ const Accounts = () => {
       {/* ========================================================================= */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-transparent p-4">
-          <div className="bg-white w-full max-w-lg rounded-2xl border border-slate-200 shadow-2xl overflow-hidden flex flex-col">
+          <div className="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden flex flex-col transition-colors">
             
             {/* Header Modal */}
-            <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between transition-colors">
               <div className="flex items-center gap-2">
                 <UserCheck className="w-5 h-5 text-[#0052ff]" />
-                <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wide">Đăng ký nhân sự mới</h3>
+                <h3 className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wide">Đăng ký nhân sự mới</h3>
               </div>
               <button 
                 onClick={() => setIsAddModalOpen(false)}
-                className="p-1 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-600 transition-colors"
+                className="p-1 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -398,7 +398,7 @@ const Accounts = () => {
                     value={addForm.name}
                     onChange={(e) => setAddForm({ ...addForm, name: e.target.value })}
                     placeholder="Nhập họ và tên nhân viên..."
-                    className="w-full pl-9 pr-4 py-2 bg-slate-50 text-xs text-slate-800 placeholder-slate-400 rounded-lg border border-slate-200 focus:bg-white focus:border-[#0052ff] focus:outline-none transition-all"
+                    className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-800 dark:text-white placeholder-slate-400 rounded-lg border border-slate-200 dark:border-slate-600 focus:bg-white dark:focus:bg-slate-700 focus:border-[#0052ff] focus:outline-none transition-all"
                   />
                 </div>
               </div>
@@ -407,7 +407,7 @@ const Accounts = () => {
               <div className="space-y-1">
                 <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Ảnh đại diện</label>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center border border-slate-200 overflow-hidden shrink-0">
+                  <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center border border-slate-200 dark:border-slate-600 overflow-hidden shrink-0 transition-colors">
                     {addForm.avatar ? (
                       <img src={addForm.avatar} alt="Preview" className="w-full h-full object-cover" />
                     ) : (
@@ -435,7 +435,7 @@ const Accounts = () => {
                   <select
                     value={addForm.department}
                     onChange={(e) => setAddForm({ ...addForm, department: e.target.value })}
-                    className="w-full pl-9 pr-4 py-2 bg-slate-50 text-xs text-slate-800 rounded-lg border border-slate-200 focus:bg-white focus:border-[#0052ff] focus:outline-none transition-all"
+                    className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-800 dark:text-white rounded-lg border border-slate-200 dark:border-slate-600 focus:bg-white dark:focus:bg-slate-700 focus:border-[#0052ff] focus:outline-none transition-all"
                   >
                     <option value="Bán hàng">Bán hàng (Sales Assistant)</option>
                     <option value="Admin">Hệ thống (Administrator)</option>
@@ -456,7 +456,7 @@ const Accounts = () => {
                     value={addForm.email}
                     onChange={handleAddEmailChange}
                     placeholder="tên_nhan_vien@drxstore.vn"
-                    className="w-full pl-9 pr-4 py-2 bg-slate-50 text-xs text-slate-800 placeholder-slate-400 rounded-lg border border-slate-200 focus:bg-white focus:border-[#0052ff] focus:outline-none transition-all"
+                    className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-800 dark:text-white placeholder-slate-400 rounded-lg border border-slate-200 dark:border-slate-600 focus:bg-white dark:focus:bg-slate-700 focus:border-[#0052ff] focus:outline-none transition-all"
                   />
                 </div>
                 {/* Text error hiển thị lỗi miền khi sai format */}
@@ -481,17 +481,17 @@ const Accounts = () => {
                     value={addForm.password}
                     onChange={(e) => setAddForm({ ...addForm, password: e.target.value })}
                     placeholder="Nhập mật khẩu mặc định..."
-                    className="w-full pl-9 pr-4 py-2 bg-slate-50 text-xs text-slate-800 placeholder-slate-400 rounded-lg border border-slate-200 focus:bg-white focus:border-[#0052ff] focus:outline-none transition-all"
+                    className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-800 dark:text-white placeholder-slate-400 rounded-lg border border-slate-200 dark:border-slate-600 focus:bg-white dark:focus:bg-slate-700 focus:border-[#0052ff] focus:outline-none transition-all"
                   />
                 </div>
               </div>
 
               {/* Nút hành động */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-700">
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2.5 text-xs font-bold rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors"
+                  className="px-4 py-2.5 text-xs font-bold rounded-lg border border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
                 >
                   HỦY
                 </button>
@@ -520,17 +520,17 @@ const Accounts = () => {
       {/* ========================================================================= */}
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-transparent p-4">
-          <div className="bg-white w-full max-w-2xl rounded-2xl border border-slate-200 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+          <div className="bg-white dark:bg-slate-800 w-full max-w-2xl rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[90vh] transition-colors">
             
             {/* Header Modal */}
-            <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between flex-shrink-0">
+            <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between flex-shrink-0 transition-colors">
               <div className="flex items-center gap-2">
                 <Shield className="w-5 h-5 text-[#0052ff]" />
-                <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wide">Cập nhật tài khoản & Phân quyền</h3>
+                <h3 className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wide">Cập nhật tài khoản & Phân quyền</h3>
               </div>
               <button 
                 onClick={() => setIsEditModalOpen(false)}
-                className="p-1 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-600 transition-colors"
+                className="p-1 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -541,11 +541,11 @@ const Accounts = () => {
               
               {/* PHẦN 1: Thông tin chung */}
               <div className="space-y-4">
-                <h4 className="text-[10px] font-bold text-[#0052ff] uppercase tracking-wider border-b border-slate-100 pb-2">Phần 1: Thông tin nhân sự</h4>
+                <h4 className="text-[10px] font-bold text-[#0052ff] uppercase tracking-wider border-b border-slate-100 dark:border-slate-700 pb-2">Phần 1: Thông tin nhân sự</h4>
                 
                 {/* Ảnh đại diện Edit */}
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-14 h-14 rounded-lg bg-slate-100 flex items-center justify-center border border-slate-200 overflow-hidden shrink-0 shadow-sm">
+                  <div className="w-14 h-14 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center border border-slate-200 dark:border-slate-600 overflow-hidden shrink-0 shadow-sm transition-colors">
                     {editForm.avatar ? (
                       <img src={editForm.avatar} alt="Preview" className="w-full h-full object-cover" />
                     ) : (
@@ -572,7 +572,7 @@ const Accounts = () => {
                       required
                       value={editForm.name}
                       onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 text-xs text-slate-800 rounded-lg border border-slate-200 focus:bg-white focus:border-[#0052ff] focus:outline-none transition-all"
+                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-800 dark:text-white rounded-lg border border-slate-200 dark:border-slate-600 focus:bg-white dark:focus:bg-slate-700 focus:border-[#0052ff] focus:outline-none transition-all"
                     />
                   </div>
 
@@ -587,10 +587,10 @@ const Accounts = () => {
                       disabled={editForm.email === 'admin@drxstore.vn'}
                       value={editForm.email}
                       onChange={handleEditEmailChange}
-                      className={`w-full px-3 py-2 text-xs rounded-lg border focus:outline-none transition-all
+                      className={`w-full px-3 py-2 text-xs rounded-lg border dark:border-slate-600 focus:outline-none transition-all
                         ${editForm.email === 'admin@drxstore.vn' 
-                          ? 'bg-slate-100 text-slate-400 cursor-not-allowed border-slate-200 font-semibold shadow-inner' 
-                          : 'bg-slate-50 text-slate-800 border-slate-200 focus:bg-white focus:border-[#0052ff]'
+                          ? 'bg-slate-100 dark:bg-slate-700/80 text-slate-400 dark:text-slate-500 cursor-not-allowed border-slate-200 dark:border-slate-600 font-semibold shadow-inner' 
+                          : 'bg-slate-50 dark:bg-slate-700/50 text-slate-800 dark:text-white border-slate-200 dark:border-slate-600 focus:bg-white dark:focus:bg-slate-700 focus:border-[#0052ff]'
                         }
                       `}
                     />
@@ -610,7 +610,7 @@ const Accounts = () => {
                     <select
                       value={editForm.department}
                       onChange={handleEditDepartmentChange}
-                      className="w-full px-3 py-2 bg-slate-50 text-xs text-slate-800 rounded-lg border border-slate-200 focus:bg-white focus:border-[#0052ff] focus:outline-none transition-all"
+                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-800 dark:text-white rounded-lg border border-slate-200 dark:border-slate-600 focus:bg-white dark:focus:bg-slate-700 focus:border-[#0052ff] focus:outline-none transition-all"
                     >
                       <option value="Bán hàng">Bán hàng (Sales Assistant)</option>
                       <option value="Admin">Hệ thống (Administrator)</option>
@@ -623,7 +623,7 @@ const Accounts = () => {
                     <select
                       value={editForm.isActive ? 'active' : 'locked'}
                       onChange={(e) => setEditForm({ ...editForm, isActive: e.target.value === 'active' })}
-                      className="w-full px-3 py-2 bg-slate-50 text-xs text-slate-800 rounded-lg border border-slate-200 focus:bg-white focus:border-[#0052ff] focus:outline-none transition-all"
+                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-800 dark:text-white rounded-lg border border-slate-200 dark:border-slate-600 focus:bg-white dark:focus:bg-slate-700 focus:border-[#0052ff] focus:outline-none transition-all"
                     >
                       <option value="active">Đang hoạt động (Active)</option>
                       <option value="locked">Khóa tài khoản (Locked)</option>
@@ -639,7 +639,7 @@ const Accounts = () => {
                       placeholder="Nhập mật khẩu mới..."
                       value={editForm.password || ''}
                       onChange={(e) => setEditForm({ ...editForm, password: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 text-xs text-slate-800 rounded-lg border border-slate-200 focus:bg-white focus:border-[#0052ff] focus:outline-none transition-all"
+                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-800 dark:text-white rounded-lg border border-slate-200 dark:border-slate-600 focus:bg-white dark:focus:bg-slate-700 focus:border-[#0052ff] focus:outline-none transition-all"
                     />
                   </div>
                 </div>
@@ -647,7 +647,7 @@ const Accounts = () => {
 
               {/* PHẦN 2: Phân quyền chi tiết (RBAC) */}
               <div className="space-y-4">
-                <h4 className="text-[10px] font-bold text-[#0052ff] uppercase tracking-wider border-b border-slate-100 pb-2">Phần 2: Cấp quyền phân hệ chi tiết</h4>
+                <h4 className="text-[10px] font-bold text-[#0052ff] uppercase tracking-wider border-b border-slate-100 dark:border-slate-700 pb-2">Phần 2: Cập quyền phân hệ chi tiết</h4>
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   {/* Module 1: Kho hàng */}
@@ -764,11 +764,11 @@ const Accounts = () => {
               </div>
 
               {/* Nút hành động */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 flex-shrink-0">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-700 flex-shrink-0">
                 <button
                   type="button"
                   onClick={() => setIsEditModalOpen(false)}
-                  className="px-4 py-2.5 text-xs font-bold rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors"
+                  className="px-4 py-2.5 text-xs font-bold rounded-lg border border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
                 >
                   HỦY
                 </button>

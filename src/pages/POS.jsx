@@ -19,6 +19,8 @@ const POS = () => {
   const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
   const [newCustomerForm, setNewCustomerForm] = useState({ name: '', phone: '' });
   const [alertModal, setAlertModal] = useState({ isOpen: false, type: '', message: '' });
+  const [printOrder, setPrintOrder] = useState(null);
+  const [isPrintConfirmOpen, setIsPrintConfirmOpen] = useState(false);
 
   // Filtering products
   const filteredProducts = useMemo(() => {
@@ -145,11 +147,19 @@ const POS = () => {
       }
     });
 
-    setAlertModal({ isOpen: true, type: 'success', message: 'Thanh toán thành công!' });
+    setPrintOrder(newOrder);
+    setIsPrintConfirmOpen(true);
     setCart([]);
     setDiscount('');
     setNote('');
     setSelectedCustomerId('');
+  };
+
+  const handlePrintReceipt = () => {
+    setIsPrintConfirmOpen(false);
+    setTimeout(() => {
+      window.print();
+    }, 250);
   };
 
   return (
@@ -422,6 +432,129 @@ const POS = () => {
           </div>
         </div>
       )}
+
+      {/* PRINT CONFIRM MODAL (WITHOUT DARK OVERLAY BACKDROP) */}
+      {isPrintConfirmOpen && (
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-transparent" onClick={() => setIsPrintConfirmOpen(false)} />
+          <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-slate-200 dark:border-slate-700 animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-6 text-center space-y-4">
+              <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-500 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-2">
+                <CheckCircle2 className="w-8 h-8" />
+              </div>
+              <h3 className="text-lg font-extrabold text-slate-800 dark:text-white">Thanh toán thành công!</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+                Hóa đơn của bạn đã được ghi nhận. Bạn có muốn in hóa đơn giấy ngay bây giờ không?
+              </p>
+            </div>
+            <div className="p-4 bg-slate-50 dark:bg-slate-800/80 border-t border-slate-100 dark:border-slate-700 flex gap-3 transition-colors">
+              <button 
+                onClick={() => setIsPrintConfirmOpen(false)}
+                className="flex-1 px-4 py-2.5 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-bold rounded-xl border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
+              >
+                Bỏ qua
+              </button>
+              <button 
+                onClick={handlePrintReceipt}
+                className="flex-1 px-4 py-2.5 bg-[#0052ff] hover:bg-[#0042d1] text-white text-sm font-bold rounded-xl shadow-md shadow-[#0052ff]/20 transition-colors"
+              >
+                In hóa đơn
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PRINT-ONLY AREA */}
+      {printOrder && (
+        <div id="print-receipt" className="hidden print:block bg-white text-black p-4 w-[80mm] text-xs font-mono">
+          <div className="text-center space-y-1 mb-4 flex flex-col items-center">
+            {/* Logo DRX */}
+            <div className="w-10 h-10 bg-black text-white rounded-lg flex items-center justify-center font-extrabold text-lg mb-2">
+              DRX
+            </div>
+            <h1 className="text-sm font-extrabold tracking-wider uppercase">DRX STORE</h1>
+            <p className="text-[9px] italic">Cổng linh kiện máy tính uy tín hàng đầu</p>
+            <p className="text-[9px]">Đ/c: 123 Đường 3/2, Q.10, TP. HCM</p>
+            <p className="text-[9px]">Hotline: 01699.224.729</p>
+          </div>
+          
+          <div className="border-t border-dashed border-black my-2"></div>
+          
+          <div className="space-y-1 text-[10px]">
+            <p className="text-center font-bold text-xs uppercase mb-1">HÓA ĐƠN BÁN HÀNG</p>
+            <p>Số HĐ: <span className="font-bold">{printOrder.code || printOrder.id}</span></p>
+            <p>Ngày tạo: {printOrder.date}</p>
+            <p>Thu ngân: {printOrder.staffName}</p>
+            <p>Khách hàng: {printOrder.customer}</p>
+            <p>Mã KH: {printOrder.customerCode || 'KL'}</p>
+          </div>
+          
+          <div className="border-t border-dashed border-black my-2"></div>
+          
+          <table className="w-full text-[10px] text-left border-collapse">
+            <thead>
+              <tr className="border-b border-dashed border-black font-bold">
+                <th className="py-1">Tên SP</th>
+                <th className="py-1 text-center">SL</th>
+                <th className="py-1 text-right">Đ.Giá</th>
+                <th className="py-1 text-right">T.Tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+              {printOrder.items.map((item, idx) => (
+                <tr key={idx} className="border-b border-dotted border-black/20">
+                  <td className="py-1.5 max-w-[120px] truncate">{item.name}</td>
+                  <td className="py-1.5 text-center">{item.qty}</td>
+                  <td className="py-1.5 text-right">{formatPrice(item.unitPrice)}</td>
+                  <td className="py-1.5 text-right">{formatPrice(item.total)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          
+          <div className="border-t border-dashed border-black my-2"></div>
+          
+          <div className="space-y-1 text-[10px] text-right">
+            <p>Cộng tiền hàng: <span className="font-bold">{formatPrice(printOrder.total)}</span></p>
+            {printOrder.discount > 0 && (
+              <p>Chiết khấu: <span className="font-bold">-{formatPrice(printOrder.discount)}</span></p>
+            )}
+            <p className="text-xs font-extrabold uppercase">Thành tiền: {formatPrice(printOrder.total - printOrder.discount)}</p>
+          </div>
+          
+          <div className="border-t border-dashed border-black my-3"></div>
+          
+          <div className="text-center space-y-1 text-[9px] italic">
+            <p>Cám ơn quý khách đã mua hàng!</p>
+            <p>Vui lòng giữ lại hóa đơn để bảo hành.</p>
+            <p className="font-bold uppercase tracking-wider not-italic text-[10px]">DRXSTORE.VERCEL.APP</p>
+          </div>
+        </div>
+      )}
+
+      {/* Media Print Style Tag */}
+      <style>{`
+        @media print {
+          body * {
+            visibility: hidden !important;
+          }
+          #print-receipt, #print-receipt * {
+            visibility: visible !important;
+          }
+          #print-receipt {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 80mm !important;
+            padding: 10px !important;
+            margin: 0 !important;
+            background: white !important;
+            color: black !important;
+          }
+        }
+      `}</style>
+
     </div>
   );
 };

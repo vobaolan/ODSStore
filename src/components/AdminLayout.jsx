@@ -22,7 +22,7 @@ import {
   X
 } from 'lucide-react';
 import DrxLogo from './DrxLogo';
-import { AppContext } from '../contexts/AppContext';
+import { AppContext, secureStorage } from '../contexts/AppContext';
 import { useContext } from 'react';
 
 const DateTimeDisplay = () => {
@@ -95,7 +95,7 @@ const AdminLayout = () => {
     if (!activeUser) {
       // Đảm bảo không bị lặp vô tận nếu load chậm
       const timer = setTimeout(() => {
-        if (!sessionStorage.getItem('drx_active_user')) {
+        if (!secureStorage.getItem('drx_active_user')) {
           navigate('/login');
         }
       }, 500);

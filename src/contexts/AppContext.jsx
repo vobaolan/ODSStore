@@ -26,6 +26,40 @@ const sha256 = async (message) => {
   const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   return hashHex;
 };
+
+export const secureStorage = {
+  setItem: (key, value) => {
+    try {
+      const encodedKey = btoa(key);
+      const stringVal = typeof value === 'string' ? value : JSON.stringify(value);
+      const encodedVal = btoa(unescape(encodeURIComponent(stringVal)));
+      sessionStorage.setItem(encodedKey, encodedVal);
+    } catch (e) {
+      console.error('Error saving to storage:', e);
+    }
+  },
+  getItem: (key) => {
+    try {
+      const encodedKey = btoa(key);
+      const encodedVal = sessionStorage.getItem(encodedKey);
+      if (!encodedVal) return null;
+      const decoded = decodeURIComponent(escape(atob(encodedVal)));
+      try {
+        return JSON.parse(decoded);
+      } catch (e) {
+        return decoded;
+      }
+    } catch (e) {
+      return null;
+    }
+  },
+  removeItem: (key) => {
+    try {
+      const encodedKey = btoa(key);
+      sessionStorage.removeItem(encodedKey);
+    } catch (e) {}
+  }
+};
 const API_CUSTOMERS = `${API_BASE}/customers`;
 const API_ORDERS = `${API_BASE}/orders`;
 const API_PRODUCTS = `${API_BASE}/products`;
@@ -117,10 +151,10 @@ export const AppProvider = ({ children }) => {
       console.error('Lỗi khi tải dữ liệu từ Server:', error);
     }
 
-    // Vẫn dùng sessionStorage để giữ phiên Đăng nhập tạm thời khi tắt trình duyệt
-    const storedActiveUser = sessionStorage.getItem('drx_active_user');
+    // Vẫn dùng secureStorage để giữ phiên Đăng nhập tạm thời khi tắt trình duyệt
+    const storedActiveUser = secureStorage.getItem('drx_active_user');
     if (storedActiveUser) {
-      setActiveUser(JSON.parse(storedActiveUser));
+      setActiveUser(storedActiveUser);
     } else {
       setActiveUser(null);
     }
@@ -162,8 +196,11 @@ export const AppProvider = ({ children }) => {
       if (!isMatch) return { success: false, message: 'Mật khẩu không chính xác.' };
       if (!foundUser.isActive) return { success: false, message: 'Tài khoản này đã bị khóa. Vui lòng liên hệ Admin tối cao.' };
       
-      sessionStorage.setItem('admin_token', 'DRX_TOKEN_MOCK_123456');
-      sessionStorage.setItem('drx_active_user', JSON.stringify(foundUser));
+      const userToStore = { ...foundUser };
+      delete userToStore.password;
+
+      secureStorage.setItem('admin_token', 'DRX_TOKEN_MOCK_123456');
+      secureStorage.setItem('drx_active_user', userToStore);
       setActiveUser(foundUser);
       
       return { success: true };
@@ -174,8 +211,8 @@ export const AppProvider = ({ children }) => {
   };
 
   const logout = () => {
-    sessionStorage.removeItem('admin_token');
-    sessionStorage.removeItem('drx_active_user');
+    secureStorage.removeItem('admin_token');
+    secureStorage.removeItem('drx_active_user');
     setActiveUser(null);
   };
 
@@ -206,7 +243,9 @@ export const AppProvider = ({ children }) => {
       setUsers(prev => prev.map(u => (String(u.id) === String(updated.id) ? updated : u)));
       if (activeUser && String(activeUser.id) === String(updated.id)) {
         setActiveUser(updated);
-        sessionStorage.setItem('drx_active_user', JSON.stringify(updated));
+        const userToStore = { ...updated };
+        delete userToStore.password;
+        secureStorage.setItem('drx_active_user', userToStore);
       }
     } catch (error) { console.error('Lỗi cập nhật user:', error); }
   };

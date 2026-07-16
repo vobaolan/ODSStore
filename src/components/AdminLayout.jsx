@@ -46,7 +46,7 @@ const DateTimeDisplay = () => {
   }
 
   return (
-    <div className="flex flex-col items-end justify-center mr-2 border-r border-slate-200 dark:border-slate-700 pr-6">
+    <div className="hidden md:flex flex-col items-end justify-center mr-2 border-r border-slate-200 dark:border-slate-700 pr-6">
       <span className="text-[13px] font-extrabold text-[#0052ff] dark:text-[#6699ff] leading-none mb-1 tracking-wide">{timeString}</span>
       <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
         {dateString} {lunarString ? `— ÂL: ${lunarString}` : ''}
@@ -270,7 +270,7 @@ const AdminLayout = () => {
           </div>
 
           {/* Search Bar & User Control */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2 md:gap-4">
             
             <DateTimeDisplay />
 
@@ -327,7 +327,7 @@ const AdminLayout = () => {
                 onClick={() => setShowUserDropdown(!showUserDropdown)}
                 className="flex items-center gap-3 pl-6 border-l border-slate-200 dark:border-slate-700 cursor-pointer hover:opacity-80 transition-opacity"
               >
-                <div className="flex flex-col items-end">
+                <div className="hidden sm:flex flex-col items-end">
                 <span className="text-xs font-bold text-slate-800 dark:text-white">{activeUser.name}</span>
                 <span className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest">{activeUser.department}</span>
               </div>

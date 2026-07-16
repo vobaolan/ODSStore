@@ -135,7 +135,7 @@ const EditProduct = () => {
       image: images.length > 0 ? images[0] : null
     };
     updateProduct(updatedProduct);
-    navigate('/products');
+    setAlertModal({ isOpen: true, type: 'success', message: 'Cập nhật sản phẩm thành công!' });
   };
 
   return (
@@ -422,7 +422,11 @@ const EditProduct = () => {
                 </p>
               </div>
               <button 
-                onClick={() => setAlertModal({ isOpen: false, type: '', message: '' })}
+                onClick={() => {
+                  const isSuccess = alertModal.type === 'success';
+                  setAlertModal({ isOpen: false, type: '', message: '' });
+                  if (isSuccess) navigate('/products');
+                }}
                 className="w-full px-4 py-2 bg-[#0052FF] text-white text-[13px] font-bold rounded-lg hover:bg-[#0042d1] transition-colors shadow-md shadow-[#0052FF]/20"
               >
                 Đóng

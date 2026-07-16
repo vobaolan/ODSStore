@@ -17,6 +17,15 @@ const getHeaders = () => {
 };
 
 const API_USERS = `${API_BASE}/users`;
+
+const sha256 = async (message) => {
+  if (!message) return '';
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await window.crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return hashHex;
+};
 const API_CUSTOMERS = `${API_BASE}/customers`;
 const API_ORDERS = `${API_BASE}/orders`;
 const API_PRODUCTS = `${API_BASE}/products`;
@@ -130,7 +139,27 @@ export const AppProvider = ({ children }) => {
       const foundUser = freshUsers.find(u => u.email.replace(/\s+/g, '').toLowerCase() === cleanEmail);
       
       if (!foundUser) return { success: false, message: 'Email đăng nhập không tồn tại.' };
-      if (foundUser.password !== password) return { success: false, message: 'Mật khẩu không chính xác.' };
+      
+      const hashedEntered = await sha256(password);
+      const isHashedInDb = foundUser.password && foundUser.password.length === 64 && /^[0-9a-f]+$/.test(foundUser.password);
+      
+      let isMatch = false;
+      if (isHashedInDb) {
+        isMatch = foundUser.password === hashedEntered;
+      } else {
+        isMatch = foundUser.password === password;
+        if (isMatch) {
+          // Upgrade password to hash in DB progressively
+          try {
+            await apiPut(API_USERS, foundUser.id, { ...foundUser, password: hashedEntered });
+            foundUser.password = hashedEntered; // Update local reference
+          } catch (e) {
+            console.error('Không nâng cấp mật khẩu tự động được:', e);
+          }
+        }
+      }
+      
+      if (!isMatch) return { success: false, message: 'Mật khẩu không chính xác.' };
       if (!foundUser.isActive) return { success: false, message: 'Tài khoản này đã bị khóa. Vui lòng liên hệ Admin tối cao.' };
       
       sessionStorage.setItem('admin_token', 'DRX_TOKEN_MOCK_123456');
@@ -153,6 +182,9 @@ export const AppProvider = ({ children }) => {
   const addUser = async (newUser) => {
     try {
       const payload = { ...newUser };
+      if (payload.password) {
+        payload.password = await sha256(payload.password);
+      }
       if (isSupabase) {
         delete payload.id;
       }
@@ -163,7 +195,14 @@ export const AppProvider = ({ children }) => {
 
   const updateUser = async (updatedUser) => {
     try {
-      const updated = await apiPut(API_USERS, updatedUser.id, updatedUser);
+      const payload = { ...updatedUser };
+      if (payload.password) {
+        const isAlreadyHashed = payload.password.length === 64 && /^[0-9a-f]+$/.test(payload.password);
+        if (!isAlreadyHashed) {
+          payload.password = await sha256(payload.password);
+        }
+      }
+      const updated = await apiPut(API_USERS, payload.id, payload);
       setUsers(prev => prev.map(u => (String(u.id) === String(updated.id) ? updated : u)));
       if (activeUser && String(activeUser.id) === String(updated.id)) {
         setActiveUser(updated);

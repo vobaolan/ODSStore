@@ -17,7 +17,9 @@ import {
   ScrollText,
   PieChart,
   UsersRound,
-  PackageCheck
+  PackageCheck,
+  Menu,
+  X
 } from 'lucide-react';
 import DrxLogo from './DrxLogo';
 import { AppContext } from '../contexts/AppContext';
@@ -63,7 +65,12 @@ const AdminLayout = () => {
   const [pwdForm, setPwdForm] = useState('');
   const [pwdAlert, setPwdAlert] = useState(null);
   const [hasNewNotif, setHasNewNotif] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  // Close sidebar on path changes
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [location.pathname]);
   // Trigger dot notification on new order
   useEffect(() => {
     if (orders && orders.length > 0) {
@@ -158,36 +165,45 @@ const AdminLayout = () => {
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[#F4F6F9] text-[#212529] dark:bg-slate-900 dark:text-white transition-colors duration-300">
       
+      {/* Mobile Sidebar Backdrop Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-30 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* 1. SIDEBAR (Sidebar nền trắng, viền mảnh kiểu KiotViet) */}
-      <aside className="w-64 retail-sidebar flex flex-col z-20 shadow-sm bg-white dark:bg-slate-800 border-r border-transparent dark:border-slate-700 transition-colors duration-300">
-        {/* Logo & Branding - Đã thêm chữ thương hiệu bên phải Logo Đứng (Hình 3) để loại bỏ khoảng trống */}
-        <div className="h-20 flex items-center gap-3.5 px-6 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700 transition-colors duration-300">
-          <img 
-            src="/assets/logo-drx-vertical.png" 
-            alt="DRX Brand Logo (Vertical)" 
-            className="h-11 object-contain transition-all duration-300"
-            style={{ filter: isDarkMode ? 'brightness(0) invert(1)' : 'none' }}
-            onError={(e) => {
-              e.target.style.display = 'none';
-              document.getElementById('drx-sidebar-placeholder').style.display = 'flex';
-            }}
-          />
-          {/* Chữ thương hiệu đi kèm làm đầy khoảng trống */}
-          <div className="flex flex-col">
-            <span className="text-sm font-extrabold tracking-wider text-slate-800 dark:text-white uppercase leading-none">DRX STORE</span>
-            <span className="text-[9px] text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-widest mt-1">HỆ THỐNG QUẢN TRỊ</span>
-          </div>
-          
-          {/* Fallback Placeholder */}
-          <div id="drx-sidebar-placeholder" className="hidden items-center gap-2">
-            <div className="w-9 h-11 flex items-center justify-center bg-[#E6F0FF] rounded-lg p-1.5 border border-slate-100 shadow-sm">
-              <DrxLogo className="w-full h-full text-[#0052FF]" color="#0052FF" />
-            </div>
-            <div>
-              <h1 className="text-sm font-extrabold tracking-wider text-slate-800 uppercase">DRX Store</h1>
-              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Admin System</span>
+      <aside className={`fixed inset-y-0 left-0 w-64 retail-sidebar flex flex-col z-40 shadow-xl md:shadow-none bg-white dark:bg-slate-800 border-r border-transparent dark:border-slate-700 transition-transform duration-300 md:translate-x-0 md:static md:flex md:h-screen shrink-0
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}>
+        {/* Logo & Branding */}
+        <div className="h-20 flex items-center justify-between px-6 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 transition-colors duration-300">
+          <div className="flex items-center gap-3.5">
+            <img 
+              src="/assets/logo-drx-vertical.png" 
+              alt="DRX Brand Logo (Vertical)" 
+              className="h-11 object-contain transition-all duration-300"
+              style={{ filter: isDarkMode ? 'brightness(0) invert(1)' : 'none' }}
+              onError={(e) => {
+                e.target.style.display = 'none';
+                document.getElementById('drx-sidebar-placeholder').style.display = 'flex';
+              }}
+            />
+            {/* Chữ thương hiệu đi kèm làm đầy khoảng trống */}
+            <div className="flex flex-col">
+              <span className="text-sm font-extrabold tracking-wider text-slate-800 dark:text-white uppercase leading-none">DRX STORE</span>
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-widest mt-1">HỆ THỐNG QUẢN TRỊ</span>
             </div>
           </div>
+
+          {/* Close Menu Button for Mobile */}
+          <button 
+            onClick={() => setIsSidebarOpen(false)}
+            className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-650 dark:hover:text-slate-200 md:hidden transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Navigation Links - Chỉ hiển thị các mục menu được phép (allowedNavItems) */}
@@ -235,11 +251,22 @@ const AdminLayout = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         
         {/* 2. HEADER */}
-        <header className="h-20 retail-header flex items-center justify-between px-8 z-10 shadow-sm bg-white dark:bg-slate-800 dark:border-b dark:border-slate-700 transition-colors duration-300">
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Hệ thống</span>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600" />
-            <h2 className="text-sm font-bold text-slate-800 dark:text-white tracking-wide">{getPageTitle()}</h2>
+        <header className="h-20 retail-header flex items-center justify-between px-4 md:px-8 z-10 shadow-sm bg-white dark:bg-slate-800 dark:border-b dark:border-slate-700 transition-colors duration-300">
+          <div className="flex items-center gap-3">
+            {/* Hamburger menu button */}
+            <button 
+              onClick={() => setIsSidebarOpen(true)}
+              className="p-2 -ml-1 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 md:hidden transition-colors"
+              title="Mở menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+            
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider hidden sm:inline">Hệ thống</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 hidden sm:inline" />
+              <h2 className="text-sm font-bold text-slate-800 dark:text-white tracking-wide">{getPageTitle()}</h2>
+            </div>
           </div>
 
           {/* Search Bar & User Control */}
@@ -334,13 +361,13 @@ const AdminLayout = () => {
         </header>
 
         {/* 3. MAIN CONTENT AREA */}
-        <main className="flex-1 overflow-y-auto bg-[#F4F6F9] dark:bg-slate-900 transition-colors duration-300 p-8 flex flex-col justify-between">
+        <main className="flex-1 overflow-y-auto bg-[#F4F6F9] dark:bg-slate-900 transition-colors duration-300 p-4 md:p-8 flex flex-col justify-between">
           <div className="max-w-7xl mx-auto w-full flex-1">
             <Outlet />
           </div>
           
           {/* Footer Hệ thống chứa bản quyền & Logo Ngang (Hình 3) */}
-          <footer className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-400 dark:text-slate-600 font-bold uppercase tracking-wider w-full">
+          <footer className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400 dark:text-slate-600 font-bold uppercase tracking-wider w-full text-center sm:text-left">
             <span>© 2026 DRX Team. All rights reserved.</span>
             <div className={`transition-opacity duration-300 ${isDarkMode ? 'opacity-80 hover:opacity-100' : 'opacity-30 hover:opacity-60'}`}>
               <img 

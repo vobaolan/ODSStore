@@ -163,10 +163,10 @@ const POS = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 h-[calc(100vh-8rem)]">
+    <div className="flex flex-col md:flex-row gap-6 h-auto md:h-[calc(100vh-8rem)]">
       
       {/* LEFT PANEL: PRODUCTS */}
-      <div className="flex-1 flex flex-col min-w-0 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm transition-colors">
+      <div className="flex-1 flex flex-col min-w-0 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm transition-colors min-h-[400px] md:min-h-0">
         {/* Products Header */}
         <div className="p-4 border-b border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 space-y-4 shrink-0 transition-colors">
           <div className="flex items-center justify-between">
@@ -241,7 +241,7 @@ const POS = () => {
 
 
       {/* RIGHT PANEL: CART & CHECKOUT */}
-      <div className="w-full md:w-[380px] lg:w-[420px] flex flex-col bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm shrink-0 transition-colors">
+      <div className="w-full md:w-[380px] lg:w-[420px] flex flex-col bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm shrink-0 transition-colors min-h-[450px] md:min-h-0">
         
         {/* Customer Select */}
         <div className="p-4 border-b border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 flex items-center gap-2 shrink-0 transition-colors">

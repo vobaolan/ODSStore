@@ -74,12 +74,12 @@ export const AppProvider = ({ children }) => {
 
   // Global Dark Mode State
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    const saved = localStorage.getItem('drx_dark_mode');
+    const saved = localStorage.getItem('ods_dark_mode');
     return saved === 'true';
   });
 
   useEffect(() => {
-    localStorage.setItem('drx_dark_mode', isDarkMode);
+    localStorage.setItem('ods_dark_mode', isDarkMode);
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
     } else {
@@ -165,7 +165,7 @@ export const AppProvider = ({ children }) => {
     }
 
     // Vẫn dùng secureStorage để giữ phiên Đăng nhập tạm thời khi tắt trình duyệt
-    const storedActiveUser = secureStorage.getItem('drx_active_user');
+    const storedActiveUser = secureStorage.getItem('ods_active_user');
     if (storedActiveUser) {
       setActiveUser(storedActiveUser);
     } else {
@@ -212,8 +212,8 @@ export const AppProvider = ({ children }) => {
       const userToStore = { ...foundUser };
       delete userToStore.password;
 
-      secureStorage.setItem('admin_token', 'DRX_TOKEN_MOCK_123456');
-      secureStorage.setItem('drx_active_user', userToStore);
+      secureStorage.setItem('admin_token', 'ODS_TOKEN_MOCK_123456');
+      secureStorage.setItem('ods_active_user', userToStore);
       setActiveUser(foundUser);
       
       return { success: true };
@@ -225,7 +225,7 @@ export const AppProvider = ({ children }) => {
 
   const logout = () => {
     secureStorage.removeItem('admin_token');
-    secureStorage.removeItem('drx_active_user');
+    secureStorage.removeItem('ods_active_user');
     setActiveUser(null);
   };
 
@@ -258,7 +258,7 @@ export const AppProvider = ({ children }) => {
         setActiveUser(updated);
         const userToStore = { ...updated };
         delete userToStore.password;
-        secureStorage.setItem('drx_active_user', userToStore);
+        secureStorage.setItem('ods_active_user', userToStore);
       }
     } catch (error) { console.error('Lỗi cập nhật user:', error); }
   };

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, ShieldAlert } from 'lucide-react';
-import DrxLogo from '../components/DrxLogo';
+import OdsLogo from '../components/OdsLogo';
 import { AppContext } from '../contexts/AppContext';
 
 const Login = () => {
@@ -35,26 +35,26 @@ const Login = () => {
         <div className="flex flex-col items-center space-y-3">
           <div className="flex items-center justify-center">
             <img 
-              src="/assets/logo-drx-vertical.png" 
-              alt="DRX Brand Logo (Vertical)" 
+              src="/assets/logo-ods-vertical.png" 
+              alt="ODS Brand Logo (Vertical)" 
               className="h-20 object-contain dark:brightness-0 dark:invert transition-all"
               onError={(e) => {
                 e.target.style.display = 'none';
-                document.getElementById('drx-login-placeholder').style.display = 'flex';
+                document.getElementById('ods-login-placeholder').style.display = 'flex';
               }}
             />
             
             {/* Fallback SVG/Branding Container */}
             <div 
-              id="drx-login-placeholder" 
+              id="ods-login-placeholder" 
               className="hidden w-14 h-16 bg-[#E6F0FF] rounded-2xl p-2.5 border border-slate-100 shadow-sm items-center justify-center"
             >
-              <DrxLogo className="w-full h-full text-[#0052FF]" color="#0052FF" />
+              <OdsLogo className="w-full h-full text-[#0052FF]" color="#0052FF" />
             </div>
           </div>
           
           <div className="text-center">
-            <h1 className="text-xl font-extrabold text-[#212529] dark:text-white tracking-wide">DRX STORE</h1>
+            <h1 className="text-xl font-extrabold text-[#212529] dark:text-white tracking-wide">ODS STORE</h1>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mt-1">Cổng Quản Trị Hệ Thống</p>
           </div>
         </div>
@@ -120,8 +120,8 @@ const Login = () => {
       {/* Logo Watermark Góc Phải Dưới */}
       <div className="absolute bottom-6 right-8 opacity-20 pointer-events-none">
         <img 
-          src="/assets/logo-drx-horizontal.png" 
-          alt="DRX Brand Logo (Horizontal - Hình 3)" 
+          src="/assets/logo-ods-horizontal.png" 
+          alt="ODS Brand Logo (Horizontal - Hình 3)" 
           className="h-6 object-contain dark:brightness-0 dark:invert transition-all"
         />
       </div>

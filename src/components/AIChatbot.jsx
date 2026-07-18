@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, BookOpen } from 'lucide-react';
 
-// Bộ dữ liệu tri thức hướng dẫn sử dụng DRX Store toàn tập
-const DRX_KNOWLEDGE = {
+// Bộ dữ liệu tri thức hướng dẫn sử dụng ODS Store toàn tập
+const ODS_KNOWLEDGE = {
   pos: `Để BÁN HÀNG và THANH TOÁN (POS):
 1. Nhấp vào mục "POS" trên thanh menu bên trái.
 2. Chọn các linh kiện cần bán bằng cách nhấn vào chúng ở danh sách sản phẩm.
 3. Ở cột Giỏ hàng bên phải, điều chỉnh số lượng hoặc click dấu X để xóa bớt.
 4. Chọn Khách hàng (bằng cách tìm kiếm mã khách hàng hoặc tên khách hàng).
 5. Nhấp nút "THANH TOÁN" màu xanh dương bên dưới.
-6. Màn hình sẽ hiện hộp thoại hỏi "Bạn có muốn in hóa đơn không?". Chọn "Có" để in mẫu hóa đơn nhiệt 80mm có thương hiệu DRX STORE, thông tin đơn và danh sách linh kiện.`,
+6. Màn hình sẽ hiện hộp thoại hỏi "Bạn có muốn in hóa đơn không?". Chọn "Có" để in mẫu hóa đơn nhiệt 80mm có thương hiệu ODS STORE, thông tin đơn và danh sách linh kiện.`,
 
   product: `Để QUẢN LÝ HÀNG HÓA & THÊM SẢN PHẨM:
 1. Truy cập mục "Hàng hóa" ở danh sách menu.
@@ -38,7 +38,7 @@ const DRX_KNOWLEDGE = {
 
   customer: `Để QUẢN LÝ KHÁCH HÀNG & CÔNG NỢ:
 1. Chọn mục "Khách hàng" trên menu bên trái.
-2. Tại đây có thể quản lý danh sách khách hàng gồm: Mã khách hàng (VD: DRX-KH2629), Tên, SĐT, Doanh số tích lũy và số dư nợ hiện tại.
+2. Tại đây có thể quản lý danh sách khách hàng gồm: Mã khách hàng (VD: ODS-KH2629), Tên, SĐT, Doanh số tích lũy và số dư nợ hiện tại.
 3. Khi tạo đơn hàng tại POS, chọn đúng khách hàng để hệ thống tự động cộng dồn doanh số và tính toán công nợ cho khách hàng đó.`,
 
   analytics: `Để XEM BÁO CÁO DOANH THU & BIỂU ĐỒ PHÂN TÍCH:
@@ -65,7 +65,7 @@ const DRX_KNOWLEDGE = {
 export const AIChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { sender: 'bot', text: 'Xin chào! Tôi là Trợ lý ảo DRX Store. Bạn cần tôi hướng dẫn sử dụng tác vụ nào trên hệ thống hôm nay?' }
+    { sender: 'bot', text: 'Xin chào! Tôi là Trợ lý ảo ODS Store. Bạn cần tôi hướng dẫn sử dụng tác vụ nào trên hệ thống hôm nay?' }
   ]);
   const [input, setInput] = useState('');
   const chatEndRef = useRef(null);
@@ -88,25 +88,25 @@ export const AIChatbot = () => {
       const cleanText = text.toLowerCase();
 
       if (cleanText.includes('pos') || cleanText.includes('thanh toan') || cleanText.includes('ban hang') || cleanText.includes('in hoa don') || cleanText.includes('bill') || cleanText.includes('check out')) {
-        reply = DRX_KNOWLEDGE.pos;
+        reply = ODS_KNOWLEDGE.pos;
       } else if (cleanText.includes('thêm sản phẩm') || cleanText.includes('thêm linh kiện') || cleanText.includes('tạo sản phẩm') || cleanText.includes('them san pham')) {
-        reply = DRX_KNOWLEDGE.product;
+        reply = ODS_KNOWLEDGE.product;
       } else if (cleanText.includes('nhập hàng') || cleanText.includes('sửa kho') || cleanText.includes('tồn kho') || cleanText.includes('kho') || cleanText.includes('nhap hang') || cleanText.includes('ton kho') || cleanText.includes('sửa sản phẩm')) {
-        reply = DRX_KNOWLEDGE.stock;
+        reply = ODS_KNOWLEDGE.stock;
       } else if (cleanText.includes('imei') || cleanText.includes('serial') || cleanText.includes('sê-ri') || cleanText.includes('seri')) {
-        reply = DRX_KNOWLEDGE.imei;
+        reply = ODS_KNOWLEDGE.imei;
       } else if (cleanText.includes('hóa đơn') || cleanText.includes('đơn hàng') || cleanText.includes('hủy đơn') || cleanText.includes('xóa hóa đơn') || cleanText.includes('hoàn kho') || cleanText.includes('hoa don') || cleanText.includes('orders')) {
-        reply = DRX_KNOWLEDGE.order;
+        reply = ODS_KNOWLEDGE.order;
       } else if (cleanText.includes('khách hàng') || cleanText.includes('công nợ') || cleanText.includes('nợ') || cleanText.includes('khach hang') || cleanText.includes('customer')) {
-        reply = DRX_KNOWLEDGE.customer;
+        reply = ODS_KNOWLEDGE.customer;
       } else if (cleanText.includes('báo cáo') || cleanText.includes('doanh thu') || cleanText.includes('biểu đồ') || cleanText.includes('doanh số') || cleanText.includes('phân tích') || cleanText.includes('analytics')) {
-        reply = DRX_KNOWLEDGE.analytics;
+        reply = ODS_KNOWLEDGE.analytics;
       } else if (cleanText.includes('nhân viên') || cleanText.includes('tài khoản') || cleanText.includes('phân quyền') || cleanText.includes('quyền') || cleanText.includes('staff') || cleanText.includes('user') || cleanText.includes('account')) {
-        reply = DRX_KNOWLEDGE.accounts;
+        reply = ODS_KNOWLEDGE.accounts;
       } else if (cleanText.includes('mật khẩu') || cleanText.includes('đổi mật khẩu') || cleanText.includes('pass') || cleanText.includes('password')) {
-        reply = DRX_KNOWLEDGE.password;
+        reply = ODS_KNOWLEDGE.password;
       } else if (cleanText.includes('bảo mật') || cleanText.includes('mã hóa') || cleanText.includes('f12') || cleanText.includes('devtools') || cleanText.includes('hack') || cleanText.includes('an toan')) {
-        reply = DRX_KNOWLEDGE.security;
+        reply = ODS_KNOWLEDGE.security;
       }
 
       setMessages(prev => [...prev, { sender: 'bot', text: reply }]);
@@ -134,7 +134,7 @@ export const AIChatbot = () => {
             <div className="flex items-center gap-2">
               <BookOpen className="w-5 h-5" />
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider">Trợ Lý DRX Store</h4>
+                <h4 className="text-xs font-bold uppercase tracking-wider">Trợ Lý ODS Store</h4>
                 <p className="text-[10px] text-blue-200 font-semibold">Hướng dẫn sử dụng hệ thống</p>
               </div>
             </div>

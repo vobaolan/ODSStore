@@ -21,7 +21,7 @@ import {
   Menu,
   X
 } from 'lucide-react';
-import DrxLogo from './DrxLogo';
+import OdsLogo from './OdsLogo';
 import { AppContext, secureStorage } from '../contexts/AppContext';
 import { useContext } from 'react';
 import { AIChatbot } from './AIChatbot';
@@ -96,10 +96,10 @@ const AdminLayout = () => {
     if (!activeUser) {
       // Đảm bảo không bị lặp vô tận nếu load chậm
       const timer = setTimeout(() => {
-        if (!secureStorage.getItem('drx_active_user')) {
+        if (!secureStorage.getItem('ods_active_user')) {
           navigate('/login');
         }
-      }, 500);
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [activeUser, navigate]);
@@ -182,18 +182,18 @@ const AdminLayout = () => {
         <div className="h-20 flex items-center justify-between px-6 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 transition-colors duration-300">
           <div className="flex items-center gap-3.5">
             <img 
-              src="/assets/logo-drx-vertical.png" 
-              alt="DRX Brand Logo (Vertical)" 
+              src="/assets/logo-ods-vertical.png" 
+              alt="ODS Brand Logo (Vertical)" 
               className="h-11 object-contain transition-all duration-300"
               style={{ filter: isDarkMode ? 'brightness(0) invert(1)' : 'none' }}
               onError={(e) => {
                 e.target.style.display = 'none';
-                document.getElementById('drx-sidebar-placeholder').style.display = 'flex';
+                document.getElementById('ods-sidebar-placeholder').style.display = 'flex';
               }}
             />
             {/* Chữ thương hiệu đi kèm làm đầy khoảng trống */}
             <div className="flex flex-col">
-              <span className="text-sm font-extrabold tracking-wider text-slate-800 dark:text-white uppercase leading-none">DRX STORE</span>
+              <span className="text-sm font-extrabold tracking-wider text-slate-800 dark:text-white uppercase leading-none">ODS STORE</span>
               <span className="text-[9px] text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-widest mt-1">HỆ THỐNG QUẢN TRỊ</span>
             </div>
           </div>
@@ -369,11 +369,11 @@ const AdminLayout = () => {
           
           {/* Footer Hệ thống chứa bản quyền & Logo Ngang (Hình 3) */}
           <footer className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400 dark:text-slate-600 font-bold uppercase tracking-wider w-full text-center sm:text-left">
-            <span>© 2026 DRX Team. All rights reserved.</span>
+            <span>© 2026 ODS Team. All rights reserved.</span>
             <div className={`transition-opacity duration-300 ${isDarkMode ? 'opacity-80 hover:opacity-100' : 'opacity-30 hover:opacity-60'}`}>
               <img 
-                src="/assets/logo-drx-horizontal.png" 
-                alt="DRX Brand Logo (Horizontal - Hình 3)" 
+                src="/assets/logo-ods-horizontal.png" 
+                alt="ODS Brand Logo (Horizontal - Hình 3)" 
                 className="h-6 object-contain transition-all duration-300"
                 style={{ filter: isDarkMode ? 'brightness(0) invert(1)' : 'none' }}
               />

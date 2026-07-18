@@ -28,8 +28,8 @@ const AddProduct = () => {
       const prodBrands = [...new Set(products.map(p => p.brand))].filter(Boolean);
       const prodCategories = [...new Set(products.map(p => p.category))].filter(Boolean);
       
-      const customBrands = JSON.parse(localStorage.getItem('drx_custom_brands') || '[]');
-      const customCategories = JSON.parse(localStorage.getItem('drx_custom_categories') || '[]');
+      const customBrands = JSON.parse(localStorage.getItem('ods_custom_brands') || '[]');
+      const customCategories = JSON.parse(localStorage.getItem('ods_custom_categories') || '[]');
       
       setBrandsList([...new Set([...prodBrands, ...customBrands])]);
       setCategoriesList([...new Set([...prodCategories, ...customCategories])]);
@@ -42,8 +42,8 @@ const AddProduct = () => {
     const formatted = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     setCurrentTime(formatted);
 
-    // Generate random SKU (DRX-XXXX)
-    setSku(`DRX-${Math.floor(1000 + Math.random() * 9000)}`);
+    // Generate random SKU (ODS-XXXX)
+    setSku(`ODS-${Math.floor(1000 + Math.random() * 9000)}`);
   }, []);
 
   // Handle Image Upload
@@ -88,15 +88,15 @@ const AddProduct = () => {
     if (modalConfig.type === 'brand') {
       if (!brandsList.includes(formatted)) {
         setBrandsList(prev => [...prev, formatted]);
-        const customBrands = JSON.parse(localStorage.getItem('drx_custom_brands') || '[]');
-        localStorage.setItem('drx_custom_brands', JSON.stringify([...new Set([...customBrands, formatted])]));
+        const customBrands = JSON.parse(localStorage.getItem('ods_custom_brands') || '[]');
+        localStorage.setItem('ods_custom_brands', JSON.stringify([...new Set([...customBrands, formatted])]));
       }
       setBrand(formatted);
     } else {
       if (!categoriesList.includes(formatted)) {
         setCategoriesList(prev => [...prev, formatted]);
-        const customCategories = JSON.parse(localStorage.getItem('drx_custom_categories') || '[]');
-        localStorage.setItem('drx_custom_categories', JSON.stringify([...new Set([...customCategories, formatted])]));
+        const customCategories = JSON.parse(localStorage.getItem('ods_custom_categories') || '[]');
+        localStorage.setItem('ods_custom_categories', JSON.stringify([...new Set([...customCategories, formatted])]));
       }
       setCategory(formatted);
     }
@@ -136,7 +136,7 @@ const AddProduct = () => {
       setCostPrice('');
       setStock('');
       setDescription('');
-      setSku(`DRX-${Math.floor(1000 + Math.random() * 9000)}`);
+      setSku(`ODS-${Math.floor(1000 + Math.random() * 9000)}`);
       setAlertModal({ isOpen: true, type: 'success', message: 'Đã lưu sản phẩm thành công!' });
     } else {
       navigate('/products');
@@ -178,7 +178,7 @@ const AddProduct = () => {
               type="text" 
               value={sku}
               onChange={(e) => setSku(e.target.value)}
-              placeholder="Nhập mã (VD: DRX-1234)"
+              placeholder="Nhập mã (VD: ODS-1234)"
               className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900/50 text-[13px] font-bold text-slate-700 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 rounded-lg border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-900 focus:border-[#0052FF] outline-none"
             />
           </div>

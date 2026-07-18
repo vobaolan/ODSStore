@@ -5,7 +5,7 @@ const defaultUsers = [
     id: 1,
     name: 'Nguyễn Minh Triết',
     department: 'Kho hàng',
-    email: 'trietnm@drxstore.vn',
+    email: 'trietnm@odsstore.vn',
     password: 'password123',
     isActive: true,
     permissions: {
@@ -23,7 +23,7 @@ const defaultUsers = [
     id: 2,
     name: 'Trần Thị Mỹ Linh',
     department: 'Bán hàng',
-    email: 'linhttm@drxstore.vn',
+    email: 'linhttm@odsstore.vn',
     password: 'password123',
     isActive: true,
     permissions: {
@@ -39,9 +39,9 @@ const defaultUsers = [
   },
   {
     id: 3,
-    name: 'Fizzy DRX (Super Admin)',
+    name: 'Fizzy ODS (Super Admin)',
     department: 'Admin',
-    email: 'admin@drxstore.vn',
+    email: 'admin@odsstore.vn',
     password: 'admin123', // Tài khoản Admin gốc
     isActive: true,
     permissions: {
@@ -59,7 +59,7 @@ const defaultUsers = [
     id: 4,
     name: 'Lê Văn Nam',
     department: 'Kho hàng',
-    email: 'namlv@drxstore.vn',
+    email: 'namlv@odsstore.vn',
     password: 'password123',
     isActive: false,
     permissions: {
@@ -77,10 +77,10 @@ const defaultUsers = [
 
 // Khởi tạo Database nếu chưa tồn tại
 export const initDb = () => {
-  const users = localStorage.getItem('drx_users');
+  const users = localStorage.getItem('ods_users');
   if (!users) {
     // Nếu chưa có thì khởi tạo mặc định
-    localStorage.setItem('drx_users', JSON.stringify(defaultUsers));
+    localStorage.setItem('ods_users', JSON.stringify(defaultUsers));
     console.log('Database giả lập (localStorage) đã được khởi tạo với tài khoản Admin gốc.');
     console.log('Total users in DB:', defaultUsers.length);
   } else {
@@ -93,13 +93,13 @@ export const initDb = () => {
 // Lấy danh sách nhân viên
 export const getUsers = () => {
   initDb();
-  return JSON.parse(localStorage.getItem('drx_users'));
+  return JSON.parse(localStorage.getItem('ods_users'));
 };
 
 // Lưu danh sách nhân viên đè lên localStorage
 export const saveUsers = (users) => {
   console.log('Đang ghi vào DB:', users);
-  localStorage.setItem('drx_users', JSON.stringify(users));
+  localStorage.setItem('ods_users', JSON.stringify(users));
   console.log('Ghi thành công!');
 };
 
@@ -109,7 +109,7 @@ export const verifyUser = (email, password) => {
   initDb();
   
   // BẮT BUỘC đọc trực tiếp từ localStorage khi hàm được gọi để lấy dữ liệu mới nhất
-  const users = JSON.parse(localStorage.getItem('drx_users')) || [];
+  const users = JSON.parse(localStorage.getItem('ods_users')) || [];
   
   // So sánh email sử dụng .trim().toLowerCase() ở cả 2 đầu để triệt tiêu khoảng trắng và lỗi chữ hoa thường
   const foundUser = users.find(u => u.email.trim().toLowerCase() === email.trim().toLowerCase());

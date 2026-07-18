@@ -31,7 +31,7 @@ const Customers = () => {
         gender: customer.gender || 'male'
       });
     } else {
-      const randomCode = `DRX-KH${Math.floor(1000 + Math.random() * 9000)}`;
+      const randomCode = `ODS-KH${Math.floor(1000 + Math.random() * 9000)}`;
       setEditingId(null);
       setFormData({
         name: '',
@@ -61,7 +61,7 @@ const Customers = () => {
       const newCustomer = {
         id: Date.now().toString(),
         ...formData,
-        code: formData.code || `DRX-KH${Math.floor(1000 + Math.random() * 9000)}`,
+        code: formData.code || `ODS-KH${Math.floor(1000 + Math.random() * 9000)}`,
         createdAt: new Date().toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }),
         totalSales: 0
       };
@@ -252,7 +252,7 @@ const Customers = () => {
                       type="text" 
                       value={formData.code}
                       onChange={(e) => setFormData({...formData, code: e.target.value})}
-                      placeholder="VD: DRX-KH1234"
+                      placeholder="VD: ODS-KH1234"
                       className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900/50 text-[13px] font-bold text-slate-700 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-500 rounded-lg border border-slate-200 dark:border-slate-700 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-[#0052FF] dark:focus:border-[#6699ff] transition-colors"
                     />
                   </div>

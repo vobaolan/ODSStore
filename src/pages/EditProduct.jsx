@@ -30,8 +30,8 @@ const EditProduct = () => {
       const prodBrands = [...new Set(products.map(p => p.brand))].filter(Boolean);
       const prodCategories = [...new Set(products.map(p => p.category))].filter(Boolean);
       
-      const customBrands = JSON.parse(localStorage.getItem('drx_custom_brands') || '[]');
-      const customCategories = JSON.parse(localStorage.getItem('drx_custom_categories') || '[]');
+      const customBrands = JSON.parse(localStorage.getItem('ods_custom_brands') || '[]');
+      const customCategories = JSON.parse(localStorage.getItem('ods_custom_categories') || '[]');
       
       setBrandsList([...new Set([...prodBrands, ...customBrands])]);
       setCategoriesList([...new Set([...prodCategories, ...customCategories])]);
@@ -101,15 +101,15 @@ const EditProduct = () => {
     if (modalConfig.type === 'brand') {
       if (!brandsList.includes(formatted)) {
         setBrandsList(prev => [...prev, formatted]);
-        const customBrands = JSON.parse(localStorage.getItem('drx_custom_brands') || '[]');
-        localStorage.setItem('drx_custom_brands', JSON.stringify([...new Set([...customBrands, formatted])]));
+        const customBrands = JSON.parse(localStorage.getItem('ods_custom_brands') || '[]');
+        localStorage.setItem('ods_custom_brands', JSON.stringify([...new Set([...customBrands, formatted])]));
       }
       setBrand(formatted);
     } else {
       if (!categoriesList.includes(formatted)) {
         setCategoriesList(prev => [...prev, formatted]);
-        const customCategories = JSON.parse(localStorage.getItem('drx_custom_categories') || '[]');
-        localStorage.setItem('drx_custom_categories', JSON.stringify([...new Set([...customCategories, formatted])]));
+        const customCategories = JSON.parse(localStorage.getItem('ods_custom_categories') || '[]');
+        localStorage.setItem('ods_custom_categories', JSON.stringify([...new Set([...customCategories, formatted])]));
       }
       setCategory(formatted);
     }

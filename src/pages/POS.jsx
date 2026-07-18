@@ -89,7 +89,7 @@ const POS = () => {
     }
     const newCustomer = {
       id: Date.now().toString(),
-      code: `DRX-KH${Math.floor(1000 + Math.random() * 9000)}`,
+      code: `ODS-KH${Math.floor(1000 + Math.random() * 9000)}`,
       name: newCustomerForm.name,
       phone: newCustomerForm.phone,
       createdAt: new Date().toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }),
@@ -112,7 +112,7 @@ const POS = () => {
       return;
     }
 
-    const orderCode = `DRX-HD${Math.floor(1000 + Math.random() * 9000)}`;
+    const orderCode = `ODS-HD${Math.floor(1000 + Math.random() * 9000)}`;
     const newOrder = {
       id: orderCode,
       code: orderCode,
@@ -469,11 +469,11 @@ const POS = () => {
       {printOrder && (
         <div id="print-receipt" className="hidden print:block bg-white text-black p-4 w-[80mm] text-xs font-mono">
           <div className="text-center space-y-1 mb-4 flex flex-col items-center">
-            {/* Logo DRX */}
+            {/* Logo ODS */}
             <div className="w-10 h-10 bg-black text-white rounded-lg flex items-center justify-center font-extrabold text-lg mb-2">
-              DRX
+              ODS
             </div>
-            <h1 className="text-sm font-extrabold tracking-wider uppercase">DRX STORE</h1>
+            <h1 className="text-sm font-extrabold tracking-wider uppercase">ODS STORE</h1>
             <p className="text-[9px] italic">Cổng linh kiện máy tính uy tín hàng đầu</p>
             <p className="text-[9px]">Đ/c: 123 Đường 3/2, Q.10, TP. HCM</p>
             <p className="text-[9px]">Hotline: 01699.224.729</p>
@@ -528,7 +528,7 @@ const POS = () => {
           <div className="text-center space-y-1 text-[9px] italic">
             <p>Cám ơn quý khách đã mua hàng!</p>
             <p>Vui lòng giữ lại hóa đơn để bảo hành.</p>
-            <p className="font-bold uppercase tracking-wider not-italic text-[10px]">DRXSTORE.VERCEL.APP</p>
+            <p className="font-bold uppercase tracking-wider not-italic text-[10px]">ODSSTORE.VERCEL.APP</p>
           </div>
         </div>
       )}

@@ -275,7 +275,7 @@ const Products = () => {
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <h2 className="text-xl font-extrabold text-slate-800 dark:text-white uppercase tracking-tight">Danh sách sản phẩm</h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Danh sách sản phẩm của DRX Store</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Danh sách sản phẩm của ODS Store</p>
         </div>
         <button 
           onClick={() => navigate('/products/add')}

@@ -57,15 +57,15 @@ const Accounts = () => {
 
   // Dữ liệu đã được nạp tự động từ AppContext, không cần useEffect gọi getusers nữa
 
-  // Kiểm tra định dạng Email (@drxstore.vn)
+  // Kiểm tra định dạng Email (@odsstore.vn)
   const validateEmail = (emailVal, setErrorFn) => {
     if (!emailVal) {
       setErrorFn('');
       return false;
     }
-    const regex = /^[a-zA-Z0-9._%+-]+@drxstore\.vn$/;
+    const regex = /^[a-zA-Z0-9._%+-]+@odsstore\.vn$/;
     if (!regex.test(emailVal)) {
-      setErrorFn('Email không hợp lệ. Bắt buộc phải có đuôi @drxstore.vn (Ví dụ: nguyenvana@drxstore.vn)');
+      setErrorFn('Email không hợp lệ. Bắt buộc phải có đuôi @odsstore.vn (Ví dụ: nguyenvana@odsstore.vn)');
       return false;
     } else {
       setErrorFn('');
@@ -230,7 +230,7 @@ const Accounts = () => {
 
   // 3. Xóa tài khoản nhân viên
   const handleDeleteStaff = (id, email) => {
-    if (email === 'admin@drxstore.vn' || id === 3) {
+    if (email === 'admin@odsstore.vn' || id === 3) {
       alert('Không được phép xóa tài khoản Admin gốc của hệ thống!');
       return;
     }
@@ -357,7 +357,7 @@ const Accounts = () => {
         <Shield className="w-5 h-5 text-[#0052ff] dark:text-[#6699ff] flex-shrink-0 mt-0.5" />
         <div className="space-y-1">
           <h4 className="text-xs font-bold text-[#0052ff] dark:text-[#6699ff] uppercase tracking-wide">Nguyên tắc bảo vệ tài nguyên</h4>
-          <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">Việc phân cấp quyền hạn giúp nhân viên chỉ truy cập đúng các module thuộc thẩm quyền. Chỉ những email thuộc tên miền công ty <span className="text-[#0052ff] dark:text-[#6699ff] font-bold">@drxstore.vn</span> mới được phép khởi tạo và phân quyền trên hệ thống.</p>
+          <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">Việc phân cấp quyền hạn giúp nhân viên chỉ truy cập đúng các module thuộc thẩm quyền. Chỉ những email thuộc tên miền công ty <span className="text-[#0052ff] dark:text-[#6699ff] font-bold">@odsstore.vn</span> mới được phép khởi tạo và phân quyền trên hệ thống.</p>
         </div>
       </div>
 
@@ -455,7 +455,7 @@ const Accounts = () => {
                     required
                     value={addForm.email}
                     onChange={handleAddEmailChange}
-                    placeholder="tên_nhan_vien@drxstore.vn"
+                    placeholder="tên_nhan_vien@odsstore.vn"
                     className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-700/50 text-xs text-slate-800 dark:text-white placeholder-slate-400 rounded-lg border border-slate-200 dark:border-slate-600 focus:bg-white dark:focus:bg-slate-700 focus:border-[#0052ff] focus:outline-none transition-all"
                   />
                 </div>
@@ -579,16 +579,16 @@ const Accounts = () => {
                   {/* Email */}
                   <div className="space-y-1">
                     <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">
-                      Email đăng nhập {editForm.email === 'admin@drxstore.vn' ? '(Khóa Super Admin)' : '*'}
+                      Email đăng nhập {editForm.email === 'admin@odsstore.vn' ? '(Khóa Super Admin)' : '*'}
                     </label>
                     <input
                       type="email"
                       required
-                      disabled={editForm.email === 'admin@drxstore.vn'}
+                      disabled={editForm.email === 'admin@odsstore.vn'}
                       value={editForm.email}
                       onChange={handleEditEmailChange}
                       className={`w-full px-3 py-2 text-xs rounded-lg border dark:border-slate-600 focus:outline-none transition-all
-                        ${editForm.email === 'admin@drxstore.vn' 
+                        ${editForm.email === 'admin@odsstore.vn' 
                           ? 'bg-slate-100 dark:bg-slate-700/80 text-slate-400 dark:text-slate-500 cursor-not-allowed border-slate-200 dark:border-slate-600 font-semibold shadow-inner' 
                           : 'bg-slate-50 dark:bg-slate-700/50 text-slate-800 dark:text-white border-slate-200 dark:border-slate-600 focus:bg-white dark:focus:bg-slate-700 focus:border-[#0052ff]'
                         }

@@ -235,51 +235,7 @@ const Products = () => {
   const [deleteConfirmName, setDeleteConfirmName] = useState('');
   const [alertModal, setAlertModal] = useState({ isOpen: false, type: '', message: '' });
   
-  const { products, deleteProduct, addProduct } = useContext(AppContext);
-  const [isSeeding, setIsSeeding] = useState(false);
-
-  const handleSeedSamples = async () => {
-    if (window.confirm("Bạn có muốn tạo tự động 20 linh kiện gaming mẫu vào hệ thống không?")) {
-      setIsSeeding(true);
-      try {
-        const existingSkus = new Set(products.map(p => p.sku));
-        let count = 0;
-        for (const item of sampleProducts) {
-          if (!existingSkus.has(item.sku)) {
-            const payload = {
-              id: (Date.now() + count).toString(), // Tạo ID độc nhất ở Client như AddProduct.jsx
-              name: item.name,
-              sku: item.sku,
-              brand: item.brand,
-              category: item.category,
-              price: item.price,
-              costPrice: item.costPrice,
-              stock: item.stock,
-              description: item.description,
-              specs: item.specs,
-              status: 'active',
-              reserved: 0,
-              createdAt: new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
-              imei: [],
-              image: null
-            };
-            await addProduct(payload);
-            count++;
-          }
-        }
-        setAlertModal({ 
-          isOpen: true, 
-          type: 'success', 
-          message: count > 0 ? `Đã thêm thành công ${count} sản phẩm mẫu mới!` : 'Tất cả sản phẩm mẫu đã có sẵn trong danh sách!' 
-        });
-      } catch (err) {
-        console.error(err);
-        setAlertModal({ isOpen: true, type: 'error', message: `Lỗi khi tạo sản phẩm mẫu: ${err.message}` });
-      } finally {
-        setIsSeeding(false);
-      }
-    }
-  };
+  const { products, deleteProduct } = useContext(AppContext);
 
   // Lấy danh mục động từ danh sách sản phẩm thực tế
   const categoriesList = ['Tất cả', ...new Set(products.map(p => p.category).filter(Boolean))];
@@ -321,23 +277,13 @@ const Products = () => {
           <h2 className="text-xl font-extrabold text-slate-800 dark:text-white uppercase tracking-tight">Danh sách sản phẩm</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Danh sách sản phẩm của DRX Store</p>
         </div>
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={handleSeedSamples}
-            disabled={isSeeding}
-            className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/10 border border-transparent active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <Plus className="w-4 h-4" />
-            {isSeeding ? 'ĐANG TẠO...' : 'TẠO 20 SẢN PHẨM MẪU'}
-          </button>
-          <button 
-            onClick={() => navigate('/products/add')}
-            className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg bg-[#0052ff] hover:bg-[#0042d1] text-white shadow-md shadow-[#0052ff]/10 border border-transparent active:scale-95 transition-all"
-          >
-            <Plus className="w-4 h-4" />
-            THÊM LINH KIỆN MỚI
-          </button>
-        </div>
+        <button 
+          onClick={() => navigate('/products/add')}
+          className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg bg-[#0052ff] hover:bg-[#0042d1] text-white shadow-md shadow-[#0052ff]/10 border border-transparent active:scale-95 transition-all"
+        >
+          <Plus className="w-4 h-4" />
+          THÊM LINH KIỆN MỚI
+        </button>
       </div>
 
       {/* Filter and Search Bar */}
@@ -357,25 +303,26 @@ const Products = () => {
         </div>
 
         {/* Filter Badges */}
-        <div className="flex items-center gap-3 w-full md:w-auto overflow-x-auto">
-          <button className="flex items-center gap-2 px-3 py-2 bg-slate-50 dark:bg-slate-700 hover:bg-[#0052ff]/5 border border-slate-200 dark:border-slate-600 hover:border-[#0052ff]/20 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-[#0052ff] dark:hover:text-[#6699ff] transition-all">
-            <Filter className="w-3.5 h-3.5" />
-            <span>Bộ lọc thông số</span>
-          </button>
-          <div className="flex items-center gap-1.5 border-l border-slate-200 dark:border-slate-700 pl-3 transition-colors">
-            {categoriesList.map((cat, i) => (
-              <button 
-                key={i} 
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 rounded-lg text-[11px] font-bold border transition-all ${
-                  cat === selectedCategory 
-                    ? 'bg-[#E6F0FF] dark:bg-[#0052ff]/20 border-[#0052ff]/25 dark:border-[#0052ff]/30 text-[#0052ff] dark:text-[#6699ff]' 
-                    : 'bg-transparent border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-white'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+        {/* Filter Dropdown */}
+        <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="relative">
+            <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400">
+              <Filter className="w-3.5 h-3.5" />
+            </span>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="appearance-none pl-9 pr-10 py-2.5 bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-300 rounded-lg border border-slate-200 dark:border-slate-700 focus:outline-none transition-all cursor-pointer"
+            >
+              {categoriesList.map((cat, i) => (
+                <option key={i} value={cat} className="bg-white dark:bg-slate-800 text-slate-800 dark:text-white">
+                  {cat === 'Tất cả' ? 'Tất cả danh mục' : cat}
+                </option>
+              ))}
+            </select>
+            <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-slate-400">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+            </span>
           </div>
         </div>
       </div>

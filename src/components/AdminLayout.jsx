@@ -182,10 +182,9 @@ const AdminLayout = () => {
         <div className="h-20 flex items-center justify-between px-6 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 transition-colors duration-300">
           <div className="flex items-center gap-3.5">
             <img 
-              src="/assets/logo-ods-vertical.png" 
+              src={isDarkMode ? "/assets/logo-ods-vertical-white.png" : "/assets/logo-ods-vertical-black.png"} 
               alt="ODS Brand Logo (Vertical)" 
               className="h-11 object-contain transition-all duration-300"
-              style={{ filter: isDarkMode ? 'brightness(0) invert(1)' : 'none' }}
               onError={(e) => {
                 e.target.style.display = 'none';
                 document.getElementById('ods-sidebar-placeholder').style.display = 'flex';
@@ -372,10 +371,9 @@ const AdminLayout = () => {
             <span>© 2026 ODS Team. All rights reserved.</span>
             <div className={`transition-opacity duration-300 ${isDarkMode ? 'opacity-80 hover:opacity-100' : 'opacity-30 hover:opacity-60'}`}>
               <img 
-                src="/assets/logo-ods-horizontal.png" 
+                src={isDarkMode ? "/assets/logo-ods-horizontal-white.png" : "/assets/logo-ods-horizontal-black.png"} 
                 alt="ODS Brand Logo (Horizontal - Hình 3)" 
                 className="h-11 object-contain transition-all duration-300"
-                style={{ filter: isDarkMode ? 'brightness(0) invert(1)' : 'none' }}
               />
             </div>
           </footer>

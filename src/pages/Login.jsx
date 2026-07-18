@@ -11,7 +11,7 @@ const Login = () => {
   const navigate = useNavigate();
   
   // Dùng Context API
-  const { login } = useContext(AppContext);
+  const { login, isDarkMode } = useContext(AppContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -35,9 +35,9 @@ const Login = () => {
         <div className="flex flex-col items-center space-y-3">
           <div className="flex items-center justify-center">
             <img 
-              src="/assets/logo-ods-vertical.png" 
+              src={isDarkMode ? "/assets/logo-ods-vertical-white.png" : "/assets/logo-ods-vertical-black.png"} 
               alt="ODS Brand Logo (Vertical)" 
-              className="h-20 object-contain dark:brightness-0 dark:invert transition-all"
+              className="h-20 object-contain transition-all"
               onError={(e) => {
                 e.target.style.display = 'none';
                 document.getElementById('ods-login-placeholder').style.display = 'flex';
@@ -120,9 +120,9 @@ const Login = () => {
       {/* Logo Watermark Góc Phải Dưới */}
       <div className="absolute bottom-6 right-8 opacity-20 pointer-events-none">
         <img 
-          src="/assets/logo-ods-horizontal.png" 
+          src={isDarkMode ? "/assets/logo-ods-horizontal-white.png" : "/assets/logo-ods-horizontal-black.png"} 
           alt="ODS Brand Logo (Horizontal - Hình 3)" 
-          className="h-6 object-contain dark:brightness-0 dark:invert transition-all"
+          className="h-6 object-contain transition-all"
         />
       </div>
 

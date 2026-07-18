@@ -3,6 +3,229 @@ import { Plus, Edit2, Trash2, Search, Filter, Layers, Eye, X } from 'lucide-reac
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../contexts/AppContext';
 
+const sampleProducts = [
+  {
+    sku: 'INTEL-I9-14900K',
+    name: 'CPU Intel Core i9-14900K (Up to 6.0GHz, 24 Nhân 32 Luồng, 36MB Cache)',
+    brand: 'Intel',
+    category: 'CPU',
+    price: 15490000,
+    costPrice: 14500000,
+    stock: 10,
+    description: 'Bộ vi xử lý Intel Core thế hệ thứ 14 đỉnh cao cho gaming và đồ họa chuyên nghiệp.',
+    specs: '24 Cores / 32 Threads | 3.2GHz to 6.0GHz | LGA1700'
+  },
+  {
+    sku: 'AMD-RYZEN-7800X3D',
+    name: 'CPU AMD Ryzen 7 7800X3D (4.2GHz~5.0GHz, 8 Nhân 16 Luồng, 96MB L3 Cache)',
+    brand: 'AMD',
+    category: 'CPU',
+    price: 10990000,
+    costPrice: 9900000,
+    stock: 8,
+    description: 'CPU chơi game tốt nhất thế giới hiện nay với công nghệ 3D V-Cache độc quyền.',
+    specs: '8 Cores / 16 Threads | 4.2GHz to 5.0GHz | AM5'
+  },
+  {
+    sku: 'ASUS-ROG-RTX4090',
+    name: 'Card màn hình ASUS ROG Strix GeForce RTX 4090 OC Edition 24GB GDDR6X',
+    brand: 'ASUS',
+    category: 'CARD',
+    price: 64990000,
+    costPrice: 59000000,
+    stock: 3,
+    description: 'Vua của card màn hình với hiệu năng cực đỉnh, tản nhiệt ROG Strix hầm hố mát mẻ.',
+    specs: '24GB GDDR6X | 384-bit | OC Edition'
+  },
+  {
+    sku: 'MSI-RTX4070TI-SUPER',
+    name: 'Card màn hình MSI GeForce RTX 4070 Ti SUPER 16G GAMING X SLIM',
+    brand: 'MSI',
+    category: 'CARD',
+    price: 25490000,
+    costPrice: 23500000,
+    stock: 6,
+    description: 'Hiệu năng đồ họa mạnh mẽ thế hệ Ada Lovelace, thiết kế mỏng nhẹ sang trọng.',
+    specs: '16GB GDDR6X | 256-bit | Gaming X Slim'
+  },
+  {
+    sku: 'ASUS-ROG-Z790-HERO',
+    name: 'Mainboard ASUS ROG MAXIMUS Z790 HERO DDR5',
+    brand: 'ASUS',
+    category: 'MAIN',
+    price: 17490000,
+    costPrice: 15900000,
+    stock: 5,
+    description: 'Bo mạch chủ cao cấp cho Intel Core Gen 14, hỗ trợ DDR5, PCIe 5.0 và cấp nguồn mạnh mẽ.',
+    specs: 'LGA1700 | Intel Z790 | DDR5 | ATX'
+  },
+  {
+    sku: 'MSI-MAG-B650-MORTAR',
+    name: 'Mainboard MSI MAG B650M MORTAR WIFI DDR5',
+    brand: 'MSI',
+    category: 'MAIN',
+    price: 5490000,
+    costPrice: 4800000,
+    stock: 12,
+    description: 'Lựa chọn quốc dân cho AMD Ryzen 7000 Series, thiết kế cứng cáp có tản nhiệt VRM dày.',
+    specs: 'AM5 | AMD B650 | DDR5 | m-ATX'
+  },
+  {
+    sku: 'CORSAIR-DOMINATOR-32G',
+    name: 'RAM Corsair Dominator Titanium RGB 32GB (2x16GB) DDR5 6000MHz',
+    brand: 'Corsair',
+    category: 'RAM',
+    price: 4990000,
+    costPrice: 4200000,
+    stock: 15,
+    description: 'Dòng RAM DDR5 cao cấp nhất của Corsair với thiết kế module Titanium thời thượng và LED RGB độc quyền.',
+    specs: '32GB (2x16GB) | DDR5 | 6000MHz | CL30'
+  },
+  {
+    sku: 'GSKILL-TRIDENT-Z5-32G',
+    name: 'RAM G.Skill Trident Z5 RGB 32GB (2x16GB) DDR5 5600MHz',
+    brand: 'G.Skill',
+    category: 'RAM',
+    price: 3290000,
+    costPrice: 2800000,
+    stock: 20,
+    description: 'Thiết kế cánh buồm huyền thoại, LED RGB rực rỡ, độ ổn định tuyệt vời cho cả Intel và AMD.',
+    specs: '32GB (2x16GB) | DDR5 | 5600MHz | CL36'
+  },
+  {
+    sku: 'SAMSUNG-990PRO-2TB',
+    name: 'Ổ cứng SSD Samsung 990 PRO 2TB M.2 NVMe PCIe Gen4 x4',
+    brand: 'Samsung',
+    category: 'SSD',
+    price: 5290000,
+    costPrice: 4600000,
+    stock: 25,
+    description: 'SSD Gen 4 nhanh nhất thế giới của Samsung với tốc độ đọc ghi lên tới 7450/6900 MB/s.',
+    specs: '2TB | M.2 NVMe | PCIe Gen4 x4 | Đọc ghi 7450/6900 MB/s'
+  },
+  {
+    sku: 'KINGSTON-NV2-1TB',
+    name: 'Ổ cứng SSD Kingston NV2 1TB M.2 PCIe NVMe Gen4 x4',
+    brand: 'Kingston',
+    category: 'SSD',
+    price: 1690000,
+    costPrice: 1400000,
+    stock: 40,
+    description: 'SSD Gen 4 quốc dân giá rẻ, dung lượng cao 1TB, tốc độ ổn định cho mọi cấu hình văn phòng và gaming.',
+    specs: '1TB | M.2 NVMe | PCIe Gen4 x4 | Đọc ghi 3500/2100 MB/s'
+  },
+  {
+    sku: 'CORSAIR-RM1000E',
+    name: 'Nguồn máy tính Corsair RM1000e 1000W - 80 Plus Gold - Full Modular',
+    brand: 'Corsair',
+    category: 'PSU',
+    price: 4390000,
+    costPrice: 3800000,
+    stock: 10,
+    description: 'Nguồn công suất thực chuẩn ATX 3.0 & PCIe 5.0 chuyên cho card màn hình khủng RTX 4090/4080.',
+    specs: '1000W | 80 Plus Gold | Full Modular | ATX 3.0'
+  },
+  {
+    sku: 'MSI-MAG-A750GL',
+    name: 'Nguồn máy tính MSI MAG A750GL 750W - 80 Plus Gold - Full Modular',
+    brand: 'MSI',
+    category: 'PSU',
+    price: 2690000,
+    costPrice: 2200000,
+    stock: 18,
+    description: 'Nguồn máy tính 750W Full Modular chuẩn ATX 3.0 hiệu suất cao, hoạt động êm ái bền bỉ.',
+    specs: '750W | 80 Plus Gold | Full Modular | ATX 3.0'
+  },
+  {
+    sku: 'LIANLI-GALAHAD-II-360',
+    name: 'Tản nhiệt nước AIO Lian Li Galahad II Trinity SL-INF 360 ARGB',
+    brand: 'Lian Li',
+    category: 'COOLER',
+    price: 5390000,
+    costPrice: 4800000,
+    stock: 7,
+    description: 'Tản nhiệt nước AIO cao cấp với fan vô cực SL-Infinity siêu đẹp, hiệu năng giải nhiệt cực khủng.',
+    specs: '360mm Rad | 3x SL-INF 120 Fan | ARGB | Pump Gen 8'
+  },
+  {
+    sku: 'THERMALRIGHT-PA120-SE',
+    name: 'Tản nhiệt khí CPU Thermalright Peerless Assassin 120 SE ARGB',
+    brand: 'Thermalright',
+    category: 'COOLER',
+    price: 950000,
+    costPrice: 750000,
+    stock: 30,
+    description: 'Vua tản nhiệt khí phân khúc tầm trung với 2 tháp, 6 ống đồng tản nhiệt cực mát.',
+    specs: 'Dual Tower | 6 Heatpipes | 2x TL-C12C-S Fan | 120mm'
+  },
+  {
+    sku: 'LIANLI-O11D-EVO',
+    name: 'Vỏ máy tính Lian Li O11 Dynamic EVO RGB - Black',
+    brand: 'Lian Li',
+    category: 'CASE',
+    price: 4790000,
+    costPrice: 4100000,
+    stock: 6,
+    description: 'Vỏ case bể cá huyền thoại nay có thêm dải LED RGB viền kép sang xịn mịn, hỗ trợ xoay ngược case.',
+    specs: 'Mid Tower | Bể cá kính cường lực | Hỗ trợ E-ATX | Muted Black'
+  },
+  {
+    sku: 'NZXT-H9-FLOW',
+    name: 'Vỏ máy tính NZXT H9 Flow Matte Black',
+    brand: 'NZXT',
+    category: 'CASE',
+    price: 4390000,
+    costPrice: 3800000,
+    stock: 8,
+    description: 'Dòng case Dual-Chamber thoáng khí cực đỉnh của NZXT, mặt kính bao trọn show linh kiện bên trong.',
+    specs: 'Mid Tower | Dual Chamber | Kính cường lực | Muted Black'
+  },
+  {
+    sku: 'ASUS-ROG-AZOTH',
+    name: 'Bàn phím cơ Asus ROG Azoth Wireless Custom Gaming Keyboard',
+    brand: 'ASUS',
+    category: 'KEYBOARD',
+    price: 6190000,
+    costPrice: 5500000,
+    stock: 5,
+    description: 'Bàn phím custom 75% không dây cao cấp tích hợp màn hình OLED đa chức năng, lót tiêu âm gasket mount.',
+    specs: 'Layout 75% | ROG NX Red Sw | OLED Screen | Gasket Mount'
+  },
+  {
+    sku: 'RAZER-VIPER-V3-PRO',
+    name: 'Chuột Gaming không dây Razer Viper V3 Pro - Black',
+    brand: 'Razer',
+    category: 'MOUSE',
+    price: 4390000,
+    costPrice: 3800000,
+    stock: 12,
+    description: 'Chuột gaming không dây siêu nhẹ 54g trang bị cảm biến Focus Pro 35K Gen 2, dongle 8000Hz đi kèm.',
+    specs: '54g siêu nhẹ | Focus Pro 35K Gen2 | 8000Hz Wireless'
+  },
+  {
+    sku: 'MSI-MAG-271QPX',
+    name: 'Màn hình máy tính MSI MAG 271QPX QD-OLED 27" 2K 360Hz 0.03ms',
+    brand: 'MSI',
+    category: 'MONITOR',
+    price: 21990000,
+    costPrice: 19500000,
+    stock: 4,
+    description: 'Màn hình gaming QD-OLED thế hệ mới siêu nét, tần số quét 360Hz đỉnh cao chuyên game eSports.',
+    specs: '27 inch | QD-OLED | 2K (2560x1440) | 360Hz | 0.03ms'
+  },
+  {
+    sku: 'ASUS-ROG-PG27AQDM',
+    name: 'Màn hình máy tính ASUS ROG Swift OLED PG27AQDM 27" 2K 240Hz 0.03ms',
+    brand: 'ASUS',
+    category: 'MONITOR',
+    price: 24990000,
+    costPrice: 22000000,
+    stock: 5,
+    description: 'Màn hình gaming OLED đỉnh cao của ASUS ROG với hệ thống tản nhiệt tối tân hạn chế burn-in.',
+    specs: '27 inch | WOLED | 2K (2560x1440) | 240Hz | 0.03ms'
+  }
+];
+
 const Products = () => {
   const navigate = useNavigate();
   const [expandedRow, setExpandedRow] = useState(null);
@@ -12,7 +235,50 @@ const Products = () => {
   const [deleteConfirmName, setDeleteConfirmName] = useState('');
   const [alertModal, setAlertModal] = useState({ isOpen: false, type: '', message: '' });
   
-  const { products, deleteProduct } = useContext(AppContext);
+  const { products, deleteProduct, addProduct } = useContext(AppContext);
+  const [isSeeding, setIsSeeding] = useState(false);
+
+  const handleSeedSamples = async () => {
+    if (window.confirm("Bạn có muốn tạo tự động 20 linh kiện gaming mẫu vào hệ thống không?")) {
+      setIsSeeding(true);
+      try {
+        const existingSkus = new Set(products.map(p => p.sku));
+        let count = 0;
+        for (const item of sampleProducts) {
+          if (!existingSkus.has(item.sku)) {
+            const payload = {
+              name: item.name,
+              sku: item.sku,
+              brand: item.brand,
+              category: item.category,
+              price: item.price,
+              costPrice: item.costPrice,
+              stock: item.stock,
+              description: item.description,
+              specs: item.specs,
+              status: 'active',
+              reserved: 0,
+              createdAt: new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
+              imei: [],
+              image: null
+            };
+            await addProduct(payload);
+            count++;
+          }
+        }
+        setAlertModal({ 
+          isOpen: true, 
+          type: 'success', 
+          message: count > 0 ? `Đã thêm thành công ${count} sản phẩm mẫu mới!` : 'Tất cả sản phẩm mẫu đã có sẵn trong danh sách!' 
+        });
+      } catch (err) {
+        console.error(err);
+        setAlertModal({ isOpen: true, type: 'error', message: 'Lỗi khi tạo sản phẩm mẫu!' });
+      } finally {
+        setIsSeeding(false);
+      }
+    }
+  };
 
   // Lấy danh mục động từ danh sách sản phẩm thực tế
   const categoriesList = ['Tất cả', ...new Set(products.map(p => p.category).filter(Boolean))];
@@ -54,13 +320,23 @@ const Products = () => {
           <h2 className="text-xl font-extrabold text-slate-800 dark:text-white uppercase tracking-tight">Danh sách sản phẩm</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Danh sách sản phẩm của DRX Store</p>
         </div>
-        <button 
-          onClick={() => navigate('/products/add')}
-          className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg bg-[#0052ff] hover:bg-[#0042d1] text-white shadow-md shadow-[#0052ff]/10 border border-transparent active:scale-95 transition-all"
-        >
-          <Plus className="w-4 h-4" />
-          THÊM LINH KIỆN MỚI
-        </button>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={handleSeedSamples}
+            disabled={isSeeding}
+            className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/10 border border-transparent active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Plus className="w-4 h-4" />
+            {isSeeding ? 'ĐANG TẠO...' : 'TẠO 20 SẢN PHẨM MẪU'}
+          </button>
+          <button 
+            onClick={() => navigate('/products/add')}
+            className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg bg-[#0052ff] hover:bg-[#0042d1] text-white shadow-md shadow-[#0052ff]/10 border border-transparent active:scale-95 transition-all"
+          >
+            <Plus className="w-4 h-4" />
+            THÊM LINH KIỆN MỚI
+          </button>
+        </div>
       </div>
 
       {/* Filter and Search Bar */}

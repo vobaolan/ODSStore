@@ -99,7 +99,11 @@ export const AppProvider = ({ children }) => {
       headers: { ...getHeaders(), ...(isSupabase ? { 'Prefer': 'return=representation' } : {}) },
       body: JSON.stringify(data)
     });
-    if (!response.ok) throw new Error('Lỗi tạo mới');
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      const errMsg = errData.message || errData.details || response.statusText || 'Lỗi tạo mới';
+      throw new Error(errMsg);
+    }
     const resData = await response.json();
     return isSupabase ? resData[0] : resData;
   };
@@ -115,7 +119,11 @@ export const AppProvider = ({ children }) => {
       headers: { ...getHeaders(), ...(isSupabase ? { 'Prefer': 'return=representation' } : {}) },
       body: JSON.stringify(payload)
     });
-    if (!response.ok) throw new Error('Lỗi cập nhật');
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      const errMsg = errData.message || errData.details || response.statusText || 'Lỗi cập nhật';
+      throw new Error(errMsg);
+    }
     const resData = await response.json();
     const result = isSupabase ? resData[0] : resData;
     if (isSupabase && result && !result.id) {
@@ -130,7 +138,12 @@ export const AppProvider = ({ children }) => {
       method: 'DELETE',
       headers: getHeaders()
     });
-    if (!response.ok) throw new Error('Lỗi xóa');
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      const errMsg = errData.message || errData.details || response.statusText || 'Lỗi xóa';
+      throw new Error(errMsg);
+    }
+    return true;
   };
 
   // Fetch dữ liệu từ API Backend
@@ -297,7 +310,11 @@ export const AppProvider = ({ children }) => {
     try {
       const created = await apiPost(API_PRODUCTS, newItem);
       setProducts(prev => [created, ...prev]);
-    } catch (e) { console.error(e); }
+      return created;
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   };
   const updateProduct = async (updatedItem) => {
     try {

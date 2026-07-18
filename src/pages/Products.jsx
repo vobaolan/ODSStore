@@ -273,7 +273,7 @@ const Products = () => {
         });
       } catch (err) {
         console.error(err);
-        setAlertModal({ isOpen: true, type: 'error', message: 'Lỗi khi tạo sản phẩm mẫu!' });
+        setAlertModal({ isOpen: true, type: 'error', message: `Lỗi khi tạo sản phẩm mẫu: ${err.message}` });
       } finally {
         setIsSeeding(false);
       }

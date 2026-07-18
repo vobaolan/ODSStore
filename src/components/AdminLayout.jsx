@@ -373,7 +373,7 @@ const AdminLayout = () => {
               <img 
                 src={isDarkMode ? "/assets/logo-ods-horizontal-white.png" : "/assets/logo-ods-horizontal-black.png"} 
                 alt="ODS Brand Logo (Horizontal - Hình 3)" 
-                className="h-11 object-contain transition-all duration-300"
+                className={`h-11 object-contain transition-all duration-300 ${isDarkMode ? 'mix-blend-screen' : 'mix-blend-multiply'}`}
               />
             </div>
           </footer>

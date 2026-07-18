@@ -122,7 +122,7 @@ const Login = () => {
         <img 
           src={isDarkMode ? "/assets/logo-ods-horizontal-white.png" : "/assets/logo-ods-horizontal-black.png"} 
           alt="ODS Brand Logo (Horizontal - Hình 3)" 
-          className="h-6 object-contain transition-all"
+          className={`h-6 object-contain transition-all ${isDarkMode ? 'mix-blend-screen' : 'mix-blend-multiply'}`}
         />
       </div>
 

@@ -247,6 +247,7 @@ const Products = () => {
         for (const item of sampleProducts) {
           if (!existingSkus.has(item.sku)) {
             const payload = {
+              id: (Date.now() + count).toString(), // Tạo ID độc nhất ở Client như AddProduct.jsx
               name: item.name,
               sku: item.sku,
               brand: item.brand,

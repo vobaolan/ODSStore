@@ -37,7 +37,7 @@ const Login = () => {
             <img 
               src={isDarkMode ? "/assets/logo-ods-vertical-white.png" : "/assets/logo-ods-vertical-black.png"} 
               alt="ODS Brand Logo (Vertical)" 
-              className="h-20 object-contain transition-all"
+              className="h-28 object-contain transition-all"
               onError={(e) => {
                 e.target.style.display = 'none';
                 document.getElementById('ods-login-placeholder').style.display = 'flex';
@@ -123,6 +123,7 @@ const Login = () => {
           src={isDarkMode ? "/assets/logo-ods-horizontal-white.png" : "/assets/logo-ods-horizontal-black.png"} 
           alt="ODS Brand Logo (Horizontal - Hình 3)" 
           className={`h-6 object-contain transition-all ${isDarkMode ? 'mix-blend-screen' : 'mix-blend-multiply'}`}
+          style={{ filter: isDarkMode ? 'contrast(300%)' : 'none' }}
         />
       </div>
 

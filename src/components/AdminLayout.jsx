@@ -184,7 +184,7 @@ const AdminLayout = () => {
             <img 
               src={isDarkMode ? "/assets/logo-ods-vertical-white.png" : "/assets/logo-ods-vertical-black.png"} 
               alt="ODS Brand Logo (Vertical)" 
-              className="h-11 object-contain transition-all duration-300"
+              className="h-16 object-contain transition-all duration-300"
               onError={(e) => {
                 e.target.style.display = 'none';
                 document.getElementById('ods-sidebar-placeholder').style.display = 'flex';
@@ -374,6 +374,7 @@ const AdminLayout = () => {
                 src={isDarkMode ? "/assets/logo-ods-horizontal-white.png" : "/assets/logo-ods-horizontal-black.png"} 
                 alt="ODS Brand Logo (Horizontal - Hình 3)" 
                 className={`h-11 object-contain transition-all duration-300 ${isDarkMode ? 'mix-blend-screen' : 'mix-blend-multiply'}`}
+                style={{ filter: isDarkMode ? 'contrast(300%)' : 'none' }}
               />
             </div>
           </footer>

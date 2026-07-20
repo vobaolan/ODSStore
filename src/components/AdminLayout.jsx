@@ -182,9 +182,9 @@ const AdminLayout = () => {
         <div className="h-20 flex items-center justify-between px-6 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 transition-colors duration-300">
           <div className="flex items-center gap-3.5">
             <img 
-              src={isDarkMode ? "/assets/logo-ods-vertical-white.png" : "/assets/logo-ods-vertical-black.png"} 
+              src="/assets/logo-ods-vertical-white.png" 
               alt="ODS Brand Logo (Vertical)" 
-              className="h-16 object-contain transition-all duration-300"
+              className={`h-16 object-contain transition-all duration-300 ${!isDarkMode ? 'invert' : ''}`}
               onError={(e) => {
                 e.target.style.display = 'none';
                 document.getElementById('ods-sidebar-placeholder').style.display = 'flex';

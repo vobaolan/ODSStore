@@ -35,9 +35,9 @@ const Login = () => {
         <div className="flex flex-col items-center space-y-3">
           <div className="flex items-center justify-center">
             <img 
-              src={isDarkMode ? "/assets/logo-ods-vertical-white.png" : "/assets/logo-ods-vertical-black.png"} 
+              src="/assets/logo-ods-vertical-white.png" 
               alt="ODS Brand Logo (Vertical)" 
-              className="h-28 object-contain transition-all"
+              className={`h-28 object-contain transition-all ${!isDarkMode ? 'invert' : ''}`}
               onError={(e) => {
                 e.target.style.display = 'none';
                 document.getElementById('ods-login-placeholder').style.display = 'flex';
